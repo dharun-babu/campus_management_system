@@ -1,31 +1,35 @@
 package com.i2i.app.common;
 
+/**
+ * Enum representing different groups of subjects.
+ */
 public enum Group {
-    COMPUTER SCIENCE, BIOLOGY, COMMERCE;
+    COMPUTERSCIENCE(1),
+    BIOLOGY(2),
+    COMMERCE(3);
 
-    public int getGroupId() {
-        switch (this) {
-        case COMPUTERSCIENCE:
-            return 1;
-        case BIOLOGY:
-            return 2;
-        case COMMERCE:
-            return 3;
-        default:
-            return 0;
-        }
+    private final int groupId;
+
+    /**
+     * Constructor to initialize groupId and groupName for each enum constant.
+     *
+     * @param groupId   the unique identifier for the group.
+     * @param groupName the name of the group.
+     */
+    Group(int groupId) {
+        this.groupId = groupId;
     }
 
-	public static Group getGroupInstance(String groupName) {
-        switch (groupName.toUpperCase()) {
-            case "COMPUTER SCIENCE":
-                return COMPUTERSCIENCE;
-            case "BIOLOGY":
-                return BIOLOGY;
-            case "COMMERCE":
-                return COMMERCE;
-            default:
-                return null;
+    public int getGroupId() {
+        return groupId;
+    }
+
+	public static Group fromString(String groupName) {
+        for (Group group : Group.values()) {
+            if (group.groupName.equalsIgnoreCase(groupName)) {
+                return group;
+            }
         }
+        return null;
     }
 }

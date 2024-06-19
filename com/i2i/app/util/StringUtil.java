@@ -1,12 +1,13 @@
 package com.i2i.app.util;
 /**
- * Class that provides some common string related operation that are accessible for use across an all.
+ * This class that provides some common string related operation that are accessible for use across an all.
  */
 public final class StringUtil {
+
     /**
      * <p>Checks whether the given string contains any special character instead of an alphabet.</p>
-     * @param str 
-     *        Input string which is to be validated. 
+	 * 
+     * @param str  Input string which is to be validated. 
      * @return validated string.
      * Ex:"ranjith" or "RaNiJtH", return true.
      * Ex:"r@njith!", return false.
@@ -23,18 +24,16 @@ public final class StringUtil {
         return true;
     }
 
-  /**
-   * <p>Checks whether the given character contains either 'A' or 'B' character </p>
-   * @param character  
-   *        Input character  which is to be validated. 
-   * @return character .
-   * Ex:'A' or 'B', retrns same character.
-   * Ex:'c' or '-', returns 0.
-   */
+	/**
+     * <p>Checks whether the given character is either 'A' or 'B'.</p>
+     *
+     * @param character  The input character to be validated.
+     * @return 'A' or 'B' if the character matches, otherwise returns '\u0000' (null character).
+     */
     public static char validateChar(char character) {
-	    if (character == 65 || character == 66) {
-	        return character;
-	    }
-	    return 0;
+        if (character == 'A' || character == 'B') {
+            return character;
+        }
+        return '\u0000'; // '\u0000' represents null character in Unicode
     }
 }

@@ -1,6 +1,5 @@
 package com.i2i.app.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.i2i.app.customexception.StudentException;
@@ -8,24 +7,25 @@ import com.i2i.app.dao.GradeDAO;
 import com.i2i.app.model.Grade;
 
 /**
- * This class for managing Grade-related operations.
- * Provides methods to create or retrieve and manage the underlying database connections.
+ * This class manages operations related to the Grade entity.
+ * It provides methods for creating or retrieving grades and managing interactions with storage.
+ * This service interacts with the storage layer class for underlying operations.
  */
 public class GradeService {
-    
+
     private GradeDAO gradeDAO = new GradeDAO();
 
     /**
      * <p> Determines the section ('A', 'B', 'C', or 'D') for a given standard.
-     * Checks the number of students in each section and assigns a section
-     * with less than 2 students or 'D' if all sections are filled.</p>
+     * This method checks the number of students in each section of the specified standard
+     * and assigns a section with fewer than 2 students. If all sections are filled, it assigns 'D'.</p>
      *
-     * @param standard the standard/class level to get the section for.
+     * @param standard      the standard/class level for which the section needs to be determined.
      * @return the section character for the given standard.
      */
     private char getSection(int standard) throws StudentException {
         Grade grade = gradeDAO.getGradeByStandardAndSection(standard, 'A');
-        if (null != grade) {
+        if (grade != null) {
             return (grade.getStudents().size() < 2) ? 'A' 
                 : (gradeDAO.getGradeByStandardAndSection(standard, 'B').getStudents().size() < 2) ? 'B'
                 : (gradeDAO.getGradeByStandardAndSection(standard, 'C').getStudents().size() < 2) ? 'C' : 'D';
@@ -34,39 +34,41 @@ public class GradeService {
     }
 
     /**
-     *<p>Retrieves an existing grade or creates a new grade for a given standard.
-     * Determines the appropriate section and either returns an existing grade 
-     * or creates a new one if none exists.</p>
+     * <p> Retrieves an existing grade or creates a new grade for a given standard.
+     * This method determines the appropriate section for the standard and either returns an existing
+     * grade or creates a new one if none exists for the specified standard and section.</p>
      *
-     * @param standard the standard/class level to get or create the grade for.
+     * @param standard      the standard/class level for which the grade needs to be retrieved or created.
      * @return the Grade for the given standard and section.
      */
     public Grade getOrCreateGrade(int standard) throws StudentException {
         char section = getSection(standard);
         Grade grade = gradeDAO.getGradeByStandardAndSection(standard, section);
-        if (null != grade) {
+        if (grade != null) {
             return grade;
         } else {
             grade = new Grade(standard, section);
+            gradeDAO.insertGrade(grade);
         }
         return grade;
     }
 
     /**
-     * Retrieves a list of all grades from the database.
+     * <p> Retrieves a list of all grades.
+     * This method to fetch all Grade records stored.</p>
      *
-     * @return a list of all Grade objects.
-     * @throws StudentException if an error occurs during database access.
+     * @return a list of all grades.
      */
     public List<Grade> getAllGrades() throws StudentException {
         return gradeDAO.getAllGrades();
     }
     
     /**
-     * <p> Retrieves a specific grade based on the standard and section.</p>
+     * <p> Retrieves a specific grade based on the standard and section.
+     * This method to fetch a Grade for the specified standard and section.</p>
      *
-     * @param standard the standard/class level to get the grade for.
-     * @param section the section (A, B, C, etc.) to get the grade for.
+     * @param standard      the standard/class level for which the grade needs to be retrieved.
+     * @param section       the section (A, B, C, etc.) for which the grade needs to be retrieved.
      * @return the Grade for the given standard and section.
      */
     public Grade getGrade(int standard, char section) throws StudentException {
@@ -74,7 +76,8 @@ public class GradeService {
     }
 
     /**
-     * <p> Closes the database connection managed by the GradeDAO.</p>
+     * <p> Closes the connection.
+     * This method ensures that all resources are properly released and the connection is closed.</p>
      */
     public void closeConnection() throws StudentException {
         gradeDAO.shutDown();
