@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.i2i.app.model.BankAccount" table="bankaccount">
+        <id name="accountId" column="account_id">
+            <generator class="identity"/>
+        </id>
+        <property name="bankName" column="bank_name" />
+        <property name="branchName" column="branch_name" />
+        <property name="accountNumber" column="account_number" unique="true" length="16"/>
+        <property name="ifscCode" column="ifsc_code" />
+        <property name="mobileNumber" column="mobile_number" length="10"/>
+        <one-to-one name="student" class="com.i2i.app.model.Student" constrained="true"/>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.i2i.app.model.Teacher" table="teacher">
+        <id name="teacherId" column="teacher_id">
+            <generator class="identity"/>
+        </id>
+        <property name="teacherName" column="teacher_name" />
+        <property name="subject" column="subject" />
+        <property name="dateOfJoin" column="date_of_join" />
+	    <set name="students" table="teachers_students" inverse="true" cascade="all" lazy="false" fetch="select">
+          <key column="teacher_id" not-null="true"/>
+          <many-to-many column="student_id" class="com.i2i.app.model.Student"/>
+        </set>
+    </class>
+</hibernate-mapping>
