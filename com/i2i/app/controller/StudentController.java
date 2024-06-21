@@ -104,7 +104,7 @@ public class StudentController {
         String ifscCode = scanner.nextLine();
         System.out.println("ENTER THE MOBILE NUMBER: ");
         long mobileNumber = scanner.nextLong();
-        scanner.nextLine()
+        scanner.nextLine();
         return studentService.getBankAccount(bankName, branchName, accountNumber, ifscCode, mobileNumber);
     }
 
