@@ -28,7 +28,7 @@ public class BankAccountDAO {
      */
     public boolean existsByAccountNumber(long accountNumber) throws StudentException {
         try (Session session = sessionFactory.openSession()) {
-            Query query = session.createQuery("select count(*) from BankAccount where account_number = :accountNumber");
+            Query<BankAccount> query = session.createQuery("select count(*) from BankAccount where account_number = :accountNumber", BankAccount.class);
             query.setParameter("accountNumber", accountNumber);
             Long count = (Long) query.uniqueResult();
             return (count != null && count > 0);

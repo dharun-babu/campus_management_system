@@ -2,7 +2,7 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-  <class name="com.i2i.app.model.Grade" table="grade">
+  <class name="com.i2i.app.model.Grade" table="grades">
     <id name="gradeId" column="grade_id">
       <generator class="identity"/>
     </id>

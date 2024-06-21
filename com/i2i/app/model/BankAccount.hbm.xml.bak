@@ -11,6 +11,6 @@
     <property name="accountNumber" column="account_number" not-null="true" type="long"/>
 	<property name="ifscCode" column="ifsc_code" />
     <property name="mobileNumber" column="mobile_number" length="10"/>
-    <one-to-one name="student" class="com.i2i.app.model.Student" cascade="all"/>
+    <one-to-one name="student" class="com.i2i.app.model.Student"/>
   </class>
 </hibernate-mapping>
