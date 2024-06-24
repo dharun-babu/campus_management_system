@@ -22,7 +22,7 @@ public class SessionFactoryProvider {
      */
     private SessionFactoryProvider() {
         try {
-            Dotenv dotenv = Dotenv.configure().directory("./src/main/resources").load();
+            Dotenv dotenv = Dotenv.configure().load();
             Configuration configuration = new Configuration();
             configuration.setProperty("hibernate.connection.driver_class", dotenv.get("DB_DRIVER"));
             configuration.setProperty("hibernate.connection.url", dotenv.get("DB_URL"));
