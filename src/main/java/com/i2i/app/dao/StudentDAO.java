@@ -34,12 +34,13 @@ public class StudentDAO {
             session.save(student);
             transaction.commit();
         } catch (Exception e) {
-            if (transaction != null) {
+            if (transaction != null && transaction.isActive()) {
                 transaction.rollback();
             }
             throw new StudentException("An error occurred while inserting the student record.", e);
         }
     }
+
 
     /**
      * <p> Retrieves a list of all Student records.

@@ -43,13 +43,8 @@ public class GradeService {
      */
     public Grade getOrCreateGrade(int standard) throws StudentException {
         char section = getSection(standard);
-        Grade grade = gradeDAO.getGradeByStandardAndSection(standard, section);
-        if (grade != null) {
-            return grade;
-        } else {
-            grade = new Grade(standard, section);
-        }
-        return grade;
+        System.out.println(section);
+        return gradeDAO.getGradeByStandardAndSection(standard, section);
     }
 
     /**

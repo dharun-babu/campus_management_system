@@ -2,6 +2,7 @@ package com.i2i.app.helper;
 
 import org.hibernate.cfg.Configuration;
 import org.hibernate.SessionFactory;
+import io.github.cdimascio.dotenv.Dotenv;
 
 import com.i2i.app.customexception.StudentException;
 
@@ -21,7 +22,14 @@ public class SessionFactoryProvider {
      */
     private SessionFactoryProvider() {
         try {
-            sessionFactory = new Configuration().configure("hibernate.cfg.xml").buildSessionFactory();
+            Dotenv dotenv = Dotenv.configure().directory("./src/main/resources").load();
+            Configuration configuration = new Configuration();
+            configuration.setProperty("hibernate.connection.driver_class", dotenv.get("DB_DRIVER"));
+            configuration.setProperty("hibernate.connection.url", dotenv.get("DB_URL"));
+            configuration.setProperty("hibernate.connection.username", dotenv.get("DB_USERNAME"));
+            configuration.setProperty("hibernate.connection.password", dotenv.get("DB_PASSWORD"));
+            configuration.configure("hibernate.cfg.xml");
+            sessionFactory = configuration.buildSessionFactory();
         } catch (Exception e) {
             System.out.println("Error occurred while configuring SessionFactory.");
             e.printStackTrace();
@@ -43,7 +51,7 @@ public class SessionFactoryProvider {
     /**
      * <p> Retrieves the Hibernate SessionFactory instance.</p>
      *
-     * @return sessionfactory The Hibernate SessionFactory instance.
+     * @return sessionFactory The Hibernate SessionFactory instance.
      */
     public SessionFactory getSessionFactory() {
         return sessionFactory;
@@ -52,8 +60,6 @@ public class SessionFactoryProvider {
     /**
      * <p> Shuts down the provided SessionFactory.
      * This method closes the Hibernate SessionFactory to release resources.</p>
-     *
-     * @param sessionFactory The SessionFactory instance to shut down.
      */
     public static void shutDown() {
         if (getInstance().getSessionFactory() != null) {

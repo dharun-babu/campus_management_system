@@ -1,70 +1,89 @@
 package com.i2i.app.model;
 
-import java.lang.StringBuilder;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.*;
+
 import com.i2i.app.util.DateUtil;
 
+@Entity
+@Table(name = "teacher")
 public class Teacher {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "teacher_id")
     private int teacherId;
+
+    @Column(name = "teacher_name")
     private String teacherName;
+
+    @Column(name = "subject")
     private String subject;
+
+    @Column(name = "date_of_join")
     private Date dateOfJoin;
-   	private Set<Student> students = new HashSet<>();
 
-	public Teacher(){}
+    @ManyToMany(mappedBy = "teachers",fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private Set<Student> students = new HashSet<>();
 
-    public Teacher(String teacherName, String subject, Date dateOfJoin) {
-		this.teacherName = teacherName;
-		this.dateOfJoin = dateOfJoin;
+    public Teacher() {
+    }
+
+    public Teacher(int teacherId, String teacherName, String subject, Date dateOfJoin, Set<Student> students) {
+        this.teacherId = teacherId;
+        this.teacherName = teacherName;
+        this.subject = subject;
+        this.dateOfJoin = dateOfJoin;
+        this.students = students;
+    }
+
+    public int getTeacherId() {
+        return teacherId;
     }
 
     public void setTeacherId(int teacherId) {
         this.teacherId = teacherId;
     }
 
-    public void setTeacherName(String teacherName) {
-        this.teacherName = teacherName;
-    }
-	
-	public void setSubject(String subject) {
-        this.subject = subject;
-    }
-
-    public void setDateOfJoin(Date dateOfJoin) {
-        this.dateOfJoin = dateOfJoin;
-    }
-
-    public void setStudents(Set<Student> students) {
-        this.students = students;
-    }
-	
-    public int getTeacherId() {
-        return teacherId;
-    }
-
     public String getTeacherName() {
         return teacherName;
     }
-	
-	public String getSubject() {
+
+    public void setTeacherName(String teacherName) {
+        this.teacherName = teacherName;
+    }
+
+    public String getSubject() {
         return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
     }
 
     public Date getDateOfJoin() {
         return dateOfJoin;
     }
 
+    public void setDateOfJoin(Date dateOfJoin) {
+        this.dateOfJoin = dateOfJoin;
+    }
+
     public Set<Student> getStudents() {
         return students;
     }
-    
+
+    public void setStudents(Set<Student> students) {
+        this.students = students;
+    }
+
+    @Override
     public String toString() {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("\nTeacher Name: ").append(getTeacherName())
-                     .append("\nExperience : ").append(DateUtil.calculateYearDifference(getDateOfJoin()));
-        return stringBuilder.toString();
+        return new StringBuilder()
+                .append("\nTeacher Name: ").append(teacherName)
+                .append("\nExperience : ").append(DateUtil.calculateYearDifference(dateOfJoin))
+                .toString();
     }
 }

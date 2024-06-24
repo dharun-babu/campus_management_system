@@ -21,14 +21,13 @@ public class Main {
 
 	private void runApplication () throws StudentException {
 		 boolean repetition = true;
-
+		 System.out.println("\n\t\t\tWELCOME TO CAMPUS MANAGEMENT SYSTEM\n\tENETR THE OPTION...\n1.STUDENT\n2.GRADE\n3.TEACHER\n4.EXISTs");
+		 int MainMenuOption = scanner.nextInt();
 		 do {
-			 System.out.println("\n\t\t\tWELCOME TO CAMPUS MANAGEMENT SYSTEM\n\tENTER THE OPTION...\n1.STUDENT\n2.GRADE\n3.TEACHER\n4.EXIST");
-			 int MainMenuOption = scanner.nextInt();
 			 switch (MainMenuOption) {
 	         case 1: {
 			     StudentController studentController = new StudentController();
-				 studentController.startApplication();
+	             studentController.startApplication();
 			     break;
 		     } 
 	         case 2: {
@@ -42,7 +41,7 @@ public class Main {
 			     break;
 		     }
 			 case 4: {
-			     SessionFactoryProvider.shutDown();
+			     SessionFactoryProvider.shutDown();kk
 				 repetition = false;
 			     break;
 		     } 

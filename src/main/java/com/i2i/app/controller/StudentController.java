@@ -25,7 +25,7 @@ public class StudentController {
      * <p> Starts the application and displays the main menu for student operations.
 	 * The user can choose to add students, display all students, display a particular student, remove a student, or exit.<p>
      */
-    public void startApplication() throws StudentException {
+    public void  startApplication() throws StudentException {
         boolean repetition = true;
         System.out.println("\n\t\t\tWELCOME TO STUDENT PAGE");
         while (repetition) {
@@ -47,11 +47,11 @@ public class StudentController {
                     removeStudent();
                     break;
                 case 5:
-					repetition = false;
+                    repetition = false;
                     break;
                 default:
                     System.out.println("INVALID OPTION");
-				    break;
+                    break;
             }
         }
     }
