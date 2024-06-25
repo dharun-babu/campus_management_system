@@ -1,15 +1,19 @@
 package com.i2i.app.service;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.i2i.app.customexception.StudentException;
 import com.i2i.app.dao.BankAccountDAO;
 import com.i2i.app.model.BankAccount;
 
 /**
  * <p> This class manages bank account-related operations.
- * It responsible to create bank accounts, check for existing account numbers, and handle resource cleanup.</p>
+ * It is responsible for creating bank accounts, checking for existing account numbers, and handling resource cleanup.</p>
  */
 public class BankAccountService {
 
+    private static final Logger logger = LogManager.getLogger(BankAccountService.class);
     private BankAccountDAO bankAccountDAO = new BankAccountDAO();
 
     /**
@@ -23,6 +27,7 @@ public class BankAccountService {
      * @return A new BankAccount instance with the provided details.
      */
     public BankAccount getBankAccount(String bankName, String branchName, long accountNumber, String ifscCode, long mobileNumber) {
+        logger.info("Creating BankAccount with accountNumber: {}, bankName: {}, branchName: {}", accountNumber, bankName, branchName);
         return new BankAccount(bankName, branchName, accountNumber, ifscCode, mobileNumber);
     }
 
@@ -37,3 +42,4 @@ public class BankAccountService {
         return bankAccountDAO.existsByAccountNumber(accountNumber);
     }
 }
+

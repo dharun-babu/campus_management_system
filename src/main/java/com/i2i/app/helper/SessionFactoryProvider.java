@@ -3,67 +3,81 @@ package com.i2i.app.helper;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.SessionFactory;
 import io.github.cdimascio.dotenv.Dotenv;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.i2i.app.customexception.StudentException;
 
 /**
- * This class that provides a Hibernate SessionFactory instance.
+ * This class provides a Hibernate SessionFactory instance.
  * This class manages the creation and retrieval of the SessionFactory.
  */
 public class SessionFactoryProvider {
-    
+
+    private static final Logger logger = LogManager.getLogger(SessionFactoryProvider.class);
     private static SessionFactoryProvider instance;
     private SessionFactory sessionFactory;
 
     /**
-     * <p> Constructs a sessionFactoryProvider and initializes the sessionFactory.
-     * This method attempts to build the sessionFactory using configuration files.
-     * If an exception occurs during configuration, it prints the stack trace.</p>
+     * <p>Constructs a SessionFactoryProvider and initializes the SessionFactory.
+     * This method attempts to build the SessionFactory using configuration files.
+     * If an exception occurs during configuration, it logs the error.</p>
      */
     private SessionFactoryProvider() {
         try {
+            logger.info("Initializing SessionFactoryProvider.");
             Dotenv dotenv = Dotenv.configure().load();
             Configuration configuration = new Configuration();
+            String logFilePath = dotenv.get("LOG_FILE_PATH");
+            System.setProperty("LOG_FILE",logFilePath);
             configuration.setProperty("hibernate.connection.driver_class", dotenv.get("DB_DRIVER"));
             configuration.setProperty("hibernate.connection.url", dotenv.get("DB_URL"));
             configuration.setProperty("hibernate.connection.username", dotenv.get("DB_USERNAME"));
             configuration.setProperty("hibernate.connection.password", dotenv.get("DB_PASSWORD"));
             configuration.configure("hibernate.cfg.xml");
             sessionFactory = configuration.buildSessionFactory();
+            logger.info("SessionFactory initialized successfully.");
         } catch (Exception e) {
-            System.out.println("Error occurred while configuring SessionFactory.");
-            e.printStackTrace();
+            logger.error("Error occurred while configuring SessionFactory.", e);
         }
     }
 
     /**
-     * <p> Retrieves the singleton instance of SessionFactoryProvider.</p>
+     * Retrieves the singleton instance of SessionFactoryProvider.
      *
      * @return sessionFactoryProvider The singleton instance of SessionFactoryProvider.
      */
     public static SessionFactoryProvider getInstance() {
-        if (null == instance) {
+        if (instance == null) {
+            logger.info("Creating a new instance of SessionFactoryProvider.");
             instance = new SessionFactoryProvider();
         }
         return instance;
     }
 
     /**
-     * <p> Retrieves the Hibernate SessionFactory instance.</p>
+     * Retrieves the Hibernate SessionFactory instance.
      *
      * @return sessionFactory The Hibernate SessionFactory instance.
      */
     public SessionFactory getSessionFactory() {
+        if (sessionFactory == null) {
+            logger.warn("SessionFactory is not initialized.");
+        }
         return sessionFactory;
     }
 
     /**
-     * <p> Shuts down the provided SessionFactory.
-     * This method closes the Hibernate SessionFactory to release resources.</p>
+     * Shuts down the provided SessionFactory.
+     * This method closes the Hibernate SessionFactory to release resources.
      */
     public static void shutDown() {
-        if (getInstance().getSessionFactory() != null) {
-            getInstance().getSessionFactory().close();
+        SessionFactory sessionFactory = getInstance().getSessionFactory();
+        if (sessionFactory != null) {
+            logger.info("Shutting down the SessionFactory.");
+            sessionFactory.close();
+        } else {
+            logger.warn("SessionFactory is already null or not initialized.");
         }
     }
 }

@@ -4,6 +4,9 @@ import java.util.Date;
 import java.util.Scanner;
 import java.util.Set;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.i2i.app.common.Group;
 import com.i2i.app.customexception.StudentException;
 import com.i2i.app.model.BankAccount;
@@ -18,6 +21,7 @@ import com.i2i.app.util.StringUtil;
  */
 public class StudentController {
 
+    private static Logger logger = LogManager.getLogger(StudentController.class);
     private Scanner scanner = new Scanner(System.in);
     private StudentService studentService = new StudentService();
 
@@ -27,6 +31,7 @@ public class StudentController {
      */
     public void  startApplication() throws StudentException {
         boolean repetition = true;
+        logger.info("Starting application...");
         System.out.println("\n\t\t\tWELCOME TO STUDENT PAGE");
         while (repetition) {
             System.out.println("\n\t\t\t\tENTER THE OPTION...\n\n1.ADD STUDENT \n2.DISPLAY ALL \n3.DISPLAY PARTICULAR \n4.REMOVE \n5.EXIT");
@@ -48,9 +53,11 @@ public class StudentController {
                     break;
                 case 5:
                     repetition = false;
+                    logger.info("Exiting application...");
                     break;
                 default:
                     System.out.println("INVALID OPTION");
+                    logger.warn("Invalid option selected: " + mainMenuOption);
                     break;
             }
         }
@@ -72,6 +79,7 @@ public class StudentController {
             System.out.println("ENTER THE STANDARD IN RANGE OF 1 - 12:");
             int standard = scanner.nextInt();
             scanner.nextLine();
+            logger.info("Gathered the student details {}, {}, {}", name, dob, standard);
             BankAccount bankAccount = getBankAccountDetails();
             Set<Teacher> teachers = getTeacherForStandard(standard);
             Student student = studentService.addStudent(name, dob, standard, bankAccount, teachers);
@@ -92,6 +100,7 @@ public class StudentController {
         System.out.println("ENTER THE ACCOUNT NUMBER IN RANGE OF 1 - 16: ");
         long accountNumber = scanner.nextLong();
         while (studentService.isAccountNumberExists(accountNumber)) {
+            logger.warn("Invalid account number {}",accountNumber);
             System.out.println("\t\t\tACCOUNT NUMBER ALREADY EXISTS.\nENTER ANOTHER ACCOUNT NUMBER: ");
             accountNumber = scanner.nextLong();
         }
@@ -105,6 +114,7 @@ public class StudentController {
         System.out.println("ENTER THE MOBILE NUMBER: ");
         long mobileNumber = scanner.nextLong();
         scanner.nextLine();
+        logger.info("bank details {}, {}, {}, {} of student",bankName, branchName, ifscCode, mobileNumber);
         return studentService.getBankAccount(bankName, branchName, accountNumber, ifscCode, mobileNumber);
     }
 
@@ -123,6 +133,7 @@ public class StudentController {
             String groupName = validateInput(scanner.nextLine()).toUpperCase();
             Group group = Group.getGroupInstance(groupName);
             while (group == null || group.getGroupId() == 0) {
+                logger.warn("Invalid group name {} ",groupName);
                 System.out.println("\nENTER THE CORRECT GROUP NAME.\n1.COMPUTER SCIENCE\n2.BIOLOGY\n3.COMMERCE");
                 groupName = validateInput(scanner.nextLine()).toUpperCase();
                 group = Group.getGroupInstance(groupName);
@@ -156,6 +167,7 @@ public class StudentController {
         int studentId = scanner.nextInt();
         Student student;
         while ((student = studentService.getStudent(studentId)) == null) {
+            logger.warn("Invailed student id {}", studentId);
             System.out.println("ENTER THE CORRECT STUDENT ID: ");
             studentId = scanner.nextInt();
         }
@@ -191,7 +203,8 @@ public class StudentController {
                 }
                 break;
             default:
-                System.out.println("INVALID OPTION");
+                logger.warn("Invalid display option {}",displayOption);
+                System.out.println("INVALID  DISPLAY OPTION");
         }
     }
 
@@ -203,6 +216,7 @@ public class StudentController {
         System.out.println("ENTER THE STUDENT ID: ");
         int studentId = scanner.nextInt();
         while (!studentService.removeStudentById(studentId)) {
+            logger.warn("Invalid student id ", studentId);
             System.out.println("ENTER THE STUDENT ID: ");
             studentId = scanner.nextInt();
         }
@@ -218,6 +232,7 @@ public class StudentController {
      */
     private String validateInput(String input) throws StudentException {
         while (!StringUtil.validateString(input)) {
+            logger.warn("Invalid string format {}", input);
             System.out.println("ENTER ONLY ALPHABET AND SPACE:");
             input = scanner.nextLine();
         }
