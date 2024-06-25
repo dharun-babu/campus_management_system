@@ -2,9 +2,10 @@ package com.i2i.app.dao;
 
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import com.i2i.app.customexception.StudentException;
@@ -13,10 +14,11 @@ import com.i2i.app.model.Grade;
 
 /**
  * This class manages operations related to Grade entities.
- * This class responsible for retrieving and managing grade records, as well as managing connections and transactions.
+ * This class is responsible for retrieving and managing grade records, as well as managing connections and transactions.
  */
 public class GradeDAO {
 
+    private static final Logger logger = LogManager.getLogger(GradeDAO.class);
     private SessionFactoryProvider sessionFactoryProvider = SessionFactoryProvider.getInstance();
     private SessionFactory sessionFactory = sessionFactoryProvider.getSessionFactory();
 
@@ -28,10 +30,14 @@ public class GradeDAO {
      * @throws StudentException If an error occurs during the retrieval process.
      */
     public List<Grade> getAllGrades() throws StudentException {
+        logger.info("Retrieving all grades");
         try (Session session = sessionFactory.openSession()) {
             Query<Grade> query = session.createQuery("from Grade", Grade.class);
-            return query.list();
+            List<Grade> grades = query.list();
+            logger.info("All grades retrieved successfully");
+            return grades;
         } catch (Exception e) {
+            logger.error("An error occurred while retrieving all grade records.", e);
             throw new StudentException("An error occurred while retrieving all grade records.", e);
         }
     }
@@ -46,12 +52,20 @@ public class GradeDAO {
      * @throws StudentException If an error occurs during the retrieval process by given standard and section.
      */
     public Grade getGradeByStandardAndSection(int standard, char section) throws StudentException {
+        logger.info("Retrieving grade for standard: {} and section: {}", standard, section);
         try (Session session = sessionFactory.openSession()) {
             Query<Grade> query = session.createQuery("from Grade where standard = :standard and section = :section", Grade.class);
             query.setParameter("standard", standard);
             query.setParameter("section", section);
-            return query.uniqueResult();
+            Grade grade = query.uniqueResult();
+            if (grade != null) {
+                logger.info("Grade retrieved successfully for standard: {} and section: {}", standard, section);
+            } else {
+                logger.warn("No grade found for standard: {} and section: {}", standard, section);
+            }
+            return grade;
         } catch (Exception e) {
+            logger.error("An error occurred while retrieving the grade record with standard {} and section {}", standard, section, e);
             throw new StudentException("An error occurred while retrieving the grade record with standard " + standard + " and section " + section, e);
         }
     }

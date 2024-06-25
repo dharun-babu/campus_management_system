@@ -1,8 +1,10 @@
 package com.i2i.app.dao;
 
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.i2i.app.customexception.StudentException;
 import com.i2i.app.helper.SessionFactoryProvider;
@@ -10,10 +12,11 @@ import com.i2i.app.model.BankAccount;
 
 /**
  * This class manages operations related to BankAccount entities.
- * This class responsible to verify the existence of a bank account number and manage the session factory.
+ * This class is responsible for verifying the existence of a bank account number.
  */
 public class BankAccountDAO {
 
+    private static final Logger logger = LogManager.getLogger(BankAccountDAO.class);
     private SessionFactoryProvider sessionFactoryProvider = SessionFactoryProvider.getInstance();
     private SessionFactory sessionFactory = sessionFactoryProvider.getSessionFactory();
 
@@ -24,15 +27,23 @@ public class BankAccountDAO {
      *
      * @param accountNumber The account number to check.
      * @return true if the account number exists, false otherwise.
-     * @throws StudentException If an error occurs during the check given account number.
+     * @throws StudentException If an error occurs during the check for the given account number.
      */
     public boolean existsByAccountNumber(long accountNumber) throws StudentException {
+        logger.info("Checking if account number {} exists", accountNumber);
         try (Session session = sessionFactory.openSession()) {
-            Query query = session.createQuery("select count(*) from BankAccount where account_number = :accountNumber");
+            Query<Long> query = session.createQuery("select count(*) from BankAccount where accountNumber = :accountNumber", Long.class);
             query.setParameter("accountNumber", accountNumber);
-            Long count = (Long) query.uniqueResult();
-            return (count != null && count > 0);
+            Long count = query.uniqueResult();
+            boolean exists = (count != null && count > 0);
+            if (exists) {
+                logger.info("Account number {} exists", accountNumber);
+            } else {
+                logger.warn("Account number {} does not exist", accountNumber);
+            }
+            return exists;
         } catch (Exception e) {
+            logger.error("An error occurred while checking if account number {} exists", accountNumber, e);
             throw new StudentException("An error occurred while checking if account number " + accountNumber + " exists.", e);
         }
     }
