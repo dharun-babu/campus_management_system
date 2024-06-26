@@ -42,7 +42,6 @@ public class TeacherDAO {
             }
             return teacher;
         } catch (Exception e) {
-            logger.error("Error occurred while retrieving the teacher details for subject: {}", subject, e);
             throw new StudentException("Error occurred while retrieving the teacher details for the subject: " + subject, e);
         }
     }
@@ -62,7 +61,6 @@ public class TeacherDAO {
             logger.info("All teachers retrieved successfully");
             return teachers;
         } catch (Exception e) {
-            logger.error("Error occurred while retrieving all teacher details.", e);
             throw new StudentException("Error occurred while retrieving all teacher details.", e);
         }
     }

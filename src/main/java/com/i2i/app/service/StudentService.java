@@ -42,14 +42,14 @@ public class StudentService {
      * @return the newly created Student.
      */
     public Student addStudent(String studentName, Date studentdob, int standard, BankAccount bankAccount, Set<Teacher> teachers) throws StudentException {
-        logger.info("Adding a new student with name: {}, DOB: {}, Standard: {}", studentName, studentdob, standard);
+        logger.debug("Adding a new student with name: {}, DOB: {}, Standard: {}", studentName, studentdob, standard);
         Grade grade = gradeService.getOrCreateGrade(standard);
         if (grade == null) {
             logger.warn("Failed to get or create grade for standard: {}", standard);
         }
         Student student = new Student(studentName, studentdob, grade, bankAccount, teachers);
         studentDAO.insertStudent(student);
-        logger.info("Successfully added student: {}", student);
+        logger.debug("Successfully added student : {}", student);
         return student;
     }
 
@@ -60,9 +60,9 @@ public class StudentService {
      * @return a List of all Students present in the system.
      */
     public List<Student> getAllStudents() throws StudentException {
-        logger.info("Retrieving all students");
+        logger.debug("Retrieving all students");
         List<Student> students = studentDAO.getAllStudents();
-        logger.info("Retrieved {} students", students.size());
+        logger.debug("Retrieved {} students", students.size());
         return students;
     }
 
@@ -75,12 +75,12 @@ public class StudentService {
      * @return the Student object with the given ID, or null if no such student exists.
      */
     public Student getStudent(int studentId) throws StudentException {
-        logger.info("Retrieving student with ID: {}", studentId);
+        logger.debug("Retrieving student with ID: {}", studentId);
         Student student = studentDAO.getStudentById(studentId);
         if (student == null) {
             logger.warn("No student found with ID: {}", studentId);
         } else {
-            logger.info("Successfully retrieved student: {}", student);
+            logger.debug("Successfully retrieved student: {}", student);
         }
         return student;
     }
@@ -94,10 +94,10 @@ public class StudentService {
      * @return true if the student was successfully removed, false otherwise.
      */
     public boolean removeStudentById(int studentId) throws StudentException {
-        logger.info("Removing student with ID: {}", studentId);
+        logger.debug("Removing student with ID: {}", studentId);
         boolean isDeleted = studentDAO.deleteStudentById(studentId);
         if (isDeleted) {
-            logger.info("Successfully removed student with ID: {}", studentId);
+            logger.debug("Successfully removed student with ID: {}", studentId);
         } else {
             logger.warn("Failed to remove student with ID: {}", studentId);
         }
@@ -112,9 +112,9 @@ public class StudentService {
      * @return true if the account number exists, false otherwise.
      */
     public boolean isAccountNumberExists(long accountNumber) throws StudentException {
-        logger.info("Checking if account number exists: {}", accountNumber);
+        logger.debug("Checking if account number exists: {}", accountNumber);
         boolean exists = bankAccountService.isAccountNumberExists(accountNumber);
-        logger.info("Account number {} existence: {}", accountNumber, exists);
+        logger.debug("Account number {} existence: {}", accountNumber, exists);
         return exists;
     }
 
@@ -130,9 +130,9 @@ public class StudentService {
      * @return the BankAccount created with the provided details
      */
     public BankAccount getBankAccount(String bankName, String branchName, long accountNumber, String ifscCode, long mobileNumber) {
-        logger.info("Retrieving bank account for Bank: {}, Branch: {}, AccountNumber: {}", bankName, branchName, accountNumber);
+        logger.debug("Retrieving bank account for Bank: {}, Branch: {}, AccountNumber: {}", bankName, branchName, accountNumber);
         BankAccount bankAccount = bankAccountService.getBankAccount(bankName, branchName, accountNumber, ifscCode, mobileNumber);
-        logger.info("Retrieved bank account: {}", bankAccount);
+        logger.debug("Retrieved bank account: {}", bankAccount);
         return bankAccount;
     }
 
@@ -145,12 +145,12 @@ public class StudentService {
      * @return the set of Teacher assigned to the given standard and group option.
      */
     public Set<Teacher> getTeachersForStandard(int subjectsOption, int groupOption) throws StudentException {
-        logger.info("Retrieving teachers for subjectsOption: {}, groupOption: {}", subjectsOption, groupOption);
+        logger.debug("Retrieving teachers for subjectsOption: {}, groupOption: {}", subjectsOption, groupOption);
         Set<Teacher> teachers = teacherService.getTeachersForStandard(subjectsOption, groupOption);
         if (teachers == null || teachers.isEmpty()) {
             logger.warn("No teachers found for subjectsOption: {}, groupOption: {}", subjectsOption, groupOption);
         } else {
-            logger.info("Retrieved {} teachers for subjectsOption: {}, groupOption: {}", teachers.size(), subjectsOption, groupOption);
+            logger.debug("Retrieved {} teachers for subjectsOption: {}, groupOption: {}", teachers.size(), subjectsOption, groupOption);
         }
         return teachers;
     }

@@ -3,7 +3,15 @@ package com.i2i.app.model;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "grade")
@@ -13,10 +21,10 @@ public class Grade {
     @Column(name = "grade_id")
     private int gradeId;
 
-    @Column(name = "standard")
+    @Column(name = "standard", precision = 2, nullable = false)
     private int standard;
 
-    @Column(name = "section")
+    @Column(name = "section", length = 1, nullable = false)
     private char section;
 
     @OneToMany(mappedBy = "grade", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)

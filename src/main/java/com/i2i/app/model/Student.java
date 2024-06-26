@@ -4,7 +4,21 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import com.i2i.app.util.DateUtil;
 
@@ -16,9 +30,10 @@ public class Student {
     @Column(name = "student_id")
     private int studentId;
 
-    @Column(name = "student_name")
+    @Column(name = "student_name", length = 30, nullable = false)
     private String studentName;
 
+    @Temporal(TemporalType.DATE)
     @Column(name = "student_dob")
     private Date studentDob;
 
@@ -27,7 +42,7 @@ public class Student {
     private Grade grade;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "account_id")
+    @JoinColumn(name = "account_id", nullable = false)
     private BankAccount bankAccount;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})

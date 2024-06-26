@@ -31,7 +31,7 @@ public class StudentController {
      */
     public void  startApplication() throws StudentException {
         boolean repetition = true;
-        logger.info("Starting application...");
+        logger.info("Starting Student controller");
         System.out.println("\n\t\t\tWELCOME TO STUDENT PAGE");
         while (repetition) {
             System.out.println("\n\t\t\t\tENTER THE OPTION...\n\n1.ADD STUDENT \n2.DISPLAY ALL \n3.DISPLAY PARTICULAR \n4.REMOVE \n5.EXIT");
@@ -61,6 +61,7 @@ public class StudentController {
                     break;
             }
         }
+        logger.info("Existing of student controller");
     }
 
     /**
@@ -68,6 +69,7 @@ public class StudentController {
 	 * Prompts the user to enter details for each student including name, date of birth, standard, and bank account details.</p>
      */
     private void addStudent() throws StudentException {
+        logger.info("Adding of student");
         System.out.println("HOW MANY STUDENTS TO ADD: ");
         int addCount = scanner.nextInt();
         scanner.nextLine();
@@ -79,13 +81,14 @@ public class StudentController {
             System.out.println("ENTER THE STANDARD IN RANGE OF 1 - 12:");
             int standard = scanner.nextInt();
             scanner.nextLine();
-            logger.info("Gathered the student details {}, {}, {}", name, dob, standard);
+            logger.debug("Gathering the student details {}, {}, {}", name, dob, standard);
             BankAccount bankAccount = getBankAccountDetails();
             Set<Teacher> teachers = getTeacherForStandard(standard);
             Student student = studentService.addStudent(name, dob, standard, bankAccount, teachers);
             System.out.println("\n\t\t\tYOUR ID: " + student.getStudentId());
             addCount--;
         }
+        logger.info("Successfully added student");
     }
 
     /**
@@ -114,7 +117,7 @@ public class StudentController {
         System.out.println("ENTER THE MOBILE NUMBER: ");
         long mobileNumber = scanner.nextLong();
         scanner.nextLine();
-        logger.info("bank details {}, {}, {}, {} of student",bankName, branchName, ifscCode, mobileNumber);
+        logger.debug("bank details {}, {}, {}, {} of student",bankName, branchName, ifscCode, mobileNumber);
         return studentService.getBankAccount(bankName, branchName, accountNumber, ifscCode, mobileNumber);
     }
 
@@ -148,12 +151,14 @@ public class StudentController {
 	 * The user can choose to display grade details, bank details, subject and teacher details, or all information.</p>
      */
     private void displayAllStudents() throws StudentException {
+        logger.info("Displaying of all students");
         System.out.println("\n\t\t\tENTER THE OPTION...\n\n1.ALONG WITH GRADE DETAILS\n2.ALONG WITH BANK DETAILS\n3.ALONG WITH SUBJECT AND TEACHER DETAILS\n4.ALL INFORMATION");
         int displayOption = scanner.nextInt();
         int countOfPerson = 1;
         for (Student student : studentService.getAllStudents()) {
             displayStudentDetails(displayOption, student, countOfPerson++);
         }
+        logger.info("Successfully displayed all the student details");
     }
 
     /**
@@ -161,6 +166,7 @@ public class StudentController {
 	 * The options include displaying grade details, bank details, subject and teacher details, or all information.</p>
      */
     private void displayParticularStudent() throws StudentException {
+        logger.info("Display particular student details");
         System.out.println("\n\t\t\tENTER THE OPTION...\n\n1.ALONG WITH GRADE DETAILS\n2.ALONG WITH BANK DETAILS\n3.ALONG WITH SUBJECT AND TEACHER DETAILS\n4.ALL INFORMATION");
         int displayOption = scanner.nextInt();
         System.out.println("\nENTER THE STUDENT ID: ");
@@ -172,6 +178,7 @@ public class StudentController {
             studentId = scanner.nextInt();
         }
         displayStudentDetails(displayOption, student, 1);
+        logger.info("Successfully displayed the particular student details");
     }
 
     /**
@@ -213,6 +220,7 @@ public class StudentController {
 	 *  Prompts the user to enter the student ID and confirms the removal.</p>
      */
     private void removeStudent() throws StudentException {
+        logger.info("Start removing of student");
         System.out.println("ENTER THE STUDENT ID: ");
         int studentId = scanner.nextInt();
         while (!studentService.removeStudentById(studentId)) {
@@ -221,6 +229,7 @@ public class StudentController {
             studentId = scanner.nextInt();
         }
         System.out.println("REMOVE STUDENT SUCCESSFUL!");
+        logger.info("Successfully removed of student");
     }
 
     /**

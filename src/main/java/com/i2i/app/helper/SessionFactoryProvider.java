@@ -1,10 +1,10 @@
 package com.i2i.app.helper;
 
-import org.hibernate.cfg.Configuration;
-import org.hibernate.SessionFactory;
-import io.github.cdimascio.dotenv.Dotenv;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import io.github.cdimascio.dotenv.Dotenv;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.SessionFactory;
 
 import com.i2i.app.customexception.StudentException;
 
@@ -25,13 +25,17 @@ public class SessionFactoryProvider {
      */
     private SessionFactoryProvider() {
         try {
-            logger.info("Initializing SessionFactoryProvider.");
+            logger.debug("Initializing SessionFactoryProvider.");
             Dotenv dotenv = Dotenv.configure().load();
             Configuration configuration = new Configuration();
             String logFilePath = dotenv.get("LOG_FILE_PATH");
             System.setProperty("LOG_FILE",logFilePath);
             configuration.setProperty("hibernate.connection.driver_class", dotenv.get("DB_DRIVER"));
-            configuration.setProperty("hibernate.connection.url", dotenv.get("DB_URL"));
+            if (null != dotenv.get("DB_URL")) {
+                configuration.setProperty("hibernate.connection.url", dotenv.get("DB_URL"));
+            } else {
+                logger.fatal("Database URL is missing in the environment configuration. SessionFactory initialization cannot proceed.");
+            }
             configuration.setProperty("hibernate.connection.username", dotenv.get("DB_USERNAME"));
             configuration.setProperty("hibernate.connection.password", dotenv.get("DB_PASSWORD"));
             configuration.configure("hibernate.cfg.xml");

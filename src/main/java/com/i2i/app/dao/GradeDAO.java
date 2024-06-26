@@ -37,7 +37,6 @@ public class GradeDAO {
             logger.info("All grades retrieved successfully");
             return grades;
         } catch (Exception e) {
-            logger.error("An error occurred while retrieving all grade records.", e);
             throw new StudentException("An error occurred while retrieving all grade records.", e);
         }
     }
@@ -65,7 +64,6 @@ public class GradeDAO {
             }
             return grade;
         } catch (Exception e) {
-            logger.error("An error occurred while retrieving the grade record with standard {} and section {}", standard, section, e);
             throw new StudentException("An error occurred while retrieving the grade record with standard " + standard + " and section " + section, e);
         }
     }

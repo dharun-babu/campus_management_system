@@ -4,7 +4,15 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 
 import com.i2i.app.util.DateUtil;
 
@@ -16,13 +24,13 @@ public class Teacher {
     @Column(name = "teacher_id")
     private int teacherId;
 
-    @Column(name = "teacher_name")
+    @Column(name = "teacher_name", length = 50, nullable = false)
     private String teacherName;
 
-    @Column(name = "subject")
+    @Column(name = "subject", length = 20, nullable = false)
     private String subject;
 
-    @Column(name = "date_of_join")
+    @Column(name = "date_of_join", nullable = false)
     private Date dateOfJoin;
 
     @ManyToMany(mappedBy = "teachers",fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})

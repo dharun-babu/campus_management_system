@@ -31,19 +31,18 @@ public class StudentDAO {
      * @throws StudentException If an error occurs during the insertion process.
      */
     public void insertStudent(Student student) throws StudentException {
-        logger.info("Inserting new student: {}", student);
+        logger.debug("Inserting new student: {}", student);
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
             session.save(student);
             transaction.commit();
-            logger.info("Student inserted successfully: {}", student);
+            logger.info("Student inserted successfully");
         } catch (Exception e) {
             if (transaction != null && transaction.isActive()) {
                 transaction.rollback();
                 logger.warn("Transaction rolled back due to an error during student insertion: {}", student);
             }
-            logger.error("Error occurred while inserting student: {}", student, e);
             throw new StudentException("An error occurred while inserting the student record.", e);
         }
     }
@@ -56,14 +55,17 @@ public class StudentDAO {
      * @throws StudentException If an error occurs during the retrieval process.
      */
     public List<Student> getAllStudents() throws StudentException {
-        logger.info("Retrieving all students");
+        logger.debug("Retrieving all students");
         try (Session session = sessionFactory.openSession()) {
             Query<Student> query = session.createQuery("from Student", Student.class);
             List<Student> students = query.list();
-            logger.info("All students retrieved successfully");
+            if (students.isEmpty()) {
+                logger.info("All students retrieved successfully");
+            } else {
+                logger.info("No students");
+            }
             return students;
         } catch (Exception e) {
-            logger.error("Error occurred while retrieving all students", e);
             throw new StudentException("An error occurred while retrieving all student records.", e);
         }
     }
@@ -77,17 +79,16 @@ public class StudentDAO {
      * @throws StudentException If an error occurs during the retrieval process.
      */
     public Student getStudentById(int studentId) throws StudentException {
-        logger.info("Retrieving student by ID: {}", studentId);
+        logger.debug("Retrieving student by ID: {}", studentId);
         try (Session session = sessionFactory.openSession()) {
             Student student = session.get(Student.class, studentId);
             if (student != null) {
-                logger.info("Student retrieved successfully: {}", student);
+                logger.info("Student retrieved successfully");
             } else {
-                logger.warn("No student found with ID: {}", studentId);
+                logger.info("No student found with ID: {}", studentId);
             }
             return student;
         } catch (Exception e) {
-            logger.error("Error occurred while retrieving student with ID: {}", studentId, e);
             throw new StudentException("An error occurred while retrieving the student record with ID " + studentId, e);
         }
     }
@@ -101,7 +102,7 @@ public class StudentDAO {
      * @throws StudentException If an error occurs during the deletion process.
      */
     public boolean deleteStudentById(int studentId) throws StudentException {
-        logger.info("Deleting student by ID: {}", studentId);
+        logger.debug("Deleting student by ID: {}", studentId);
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
@@ -112,7 +113,6 @@ public class StudentDAO {
                 logger.info("Student deleted successfully: {}", student);
                 return true;
             } else {
-                logger.warn("No student found to delete with ID: {}", studentId);
                 return false;
             }
         } catch (Exception e) {
@@ -120,7 +120,6 @@ public class StudentDAO {
                 transaction.rollback();
                 logger.warn("Transaction rolled back due to an error during student deletion with ID: {}", studentId);
             }
-            logger.error("Error occurred while deleting student with ID: {}", studentId, e);
             throw new StudentException("An error occurred while deleting the student record with ID " + studentId, e);
         }
     }

@@ -1,12 +1,18 @@
 import java.util.Scanner;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.i2i.app.controller.GradeController;
 import com.i2i.app.controller.StudentController;
 import com.i2i.app.controller.TeacherController;
 import com.i2i.app.customexception.StudentException;
 import com.i2i.app.helper.SessionFactoryProvider;
+
 public class Main {
-    private Scanner scanner = new Scanner(System.in);
+
+	private static final Logger logger = LogManager.getLogger(SessionFactoryProvider.class);
+	private Scanner scanner = new Scanner(System.in);
 
     public static void main (String[] args) {
 	     try {
@@ -14,7 +20,7 @@ public class Main {
 			 main.runApplication();
 
 	     } catch (StudentException e) {
-			 System.out.println("Student Exception : "+e.getMessage());
+			 logger.error(e.getMessage());
 			 e.printStackTrace();
 	     }
 	}

@@ -1,6 +1,14 @@
 package com.i2i.app.model;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "bankaccount")
@@ -10,19 +18,19 @@ public class BankAccount {
     @Column(name = "account_id")
     private int accountId;
 
-    @Column(name = "bank_name")
+    @Column(name = "bank_name", length = 100, nullable = false)
     private String bankName;
 
-    @Column(name = "branch_name")
+    @Column(name = "branch_name", length = 30, nullable = false)
     private String branchName;
 
     @Column(name = "account_number", unique = true, length = 16)
     private long accountNumber;
 
-    @Column(name = "ifsc_code")
+    @Column(name = "ifsc_code", nullable = false)
     private String ifscCode;
 
-    @Column(name = "mobile_number", length = 10)
+    @Column(name = "mobile_number", length = 10, nullable = false)
     private long mobileNumber;
 
     @OneToOne(mappedBy = "bankAccount", cascade = CascadeType.ALL)

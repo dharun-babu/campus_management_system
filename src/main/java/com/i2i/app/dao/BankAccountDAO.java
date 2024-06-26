@@ -43,7 +43,6 @@ public class BankAccountDAO {
             }
             return exists;
         } catch (Exception e) {
-            logger.error("An error occurred while checking if account number {} exists", accountNumber, e);
             throw new StudentException("An error occurred while checking if account number " + accountNumber + " exists.", e);
         }
     }
