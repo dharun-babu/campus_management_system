@@ -29,37 +29,41 @@ public class StudentController {
      * <p> Starts the application and displays the main menu for student operations.
 	 * The user can choose to add students, display all students, display a particular student, remove a student, or exit.<p>
      */
-    public void  startApplication() throws StudentException {
-        boolean repetition = true;
-        logger.info("Starting Student controller");
-        System.out.println("\n\t\t\tWELCOME TO STUDENT PAGE");
-        while (repetition) {
-            System.out.println("\n\t\t\t\tENTER THE OPTION...\n\n1.ADD STUDENT \n2.DISPLAY ALL \n3.DISPLAY PARTICULAR \n4.REMOVE \n5.EXIT");
-            int mainMenuOption = scanner.nextInt();
-            scanner.nextLine();
+    public void  startApplication() {
+        try {
+            boolean repetition = true;
+            logger.info("Starting Student controller");
+            System.out.println("\n\t\t\tWELCOME TO STUDENT PAGE");
+            while (repetition) {
+                System.out.println("\n\t\t\t\tENTER THE OPTION...\n\n1.ADD STUDENT \n2.DISPLAY ALL \n3.DISPLAY PARTICULAR \n4.REMOVE \n5.EXIT");
+                int mainMenuOption = scanner.nextInt();
+                scanner.nextLine();
 
-            switch (mainMenuOption) {
-                case 1:
-                    addStudent();
-                    break;
-                case 2:
-                    displayAllStudents();
-                    break;
-                case 3:
-                    displayParticularStudent();
-                    break;
-                case 4:
-                    removeStudent();
-                    break;
-                case 5:
-                    repetition = false;
-                    logger.info("Exiting application...");
-                    break;
-                default:
-                    System.out.println("INVALID OPTION");
-                    logger.warn("Invalid option selected: " + mainMenuOption);
-                    break;
+                switch (mainMenuOption) {
+                    case 1:
+                        addStudent();
+                        break;
+                    case 2:
+                        displayAllStudents();
+                        break;
+                    case 3:
+                        displayParticularStudent();
+                        break;
+                    case 4:
+                        removeStudent();
+                        break;
+                    case 5:
+                        repetition = false;
+                        logger.info("Exiting application...");
+                        break;
+                    default:
+                        System.out.println("INVALID OPTION");
+                        logger.warn("Invalid option selected:{} ", mainMenuOption);
+                        break;
+                }
             }
+        } catch (Exception e) {
+            logger.error(e.getMessage());
         }
         logger.info("Existing of student controller");
     }
@@ -86,6 +90,7 @@ public class StudentController {
             Set<Teacher> teachers = getTeacherForStandard(standard);
             Student student = studentService.addStudent(name, dob, standard, bankAccount, teachers);
             System.out.println("\n\t\t\tYOUR ID: " + student.getStudentId());
+            logger.info("");
             addCount--;
         }
         logger.info("Successfully added student");

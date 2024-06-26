@@ -53,7 +53,7 @@ public class SessionFactoryProvider {
      */
     public static SessionFactoryProvider getInstance() {
         if (instance == null) {
-            logger.info("Creating a new instance of SessionFactoryProvider.");
+            logger.debug("Creating a new instance of SessionFactoryProvider.");
             instance = new SessionFactoryProvider();
         }
         return instance;
@@ -78,7 +78,7 @@ public class SessionFactoryProvider {
     public static void shutDown() {
         SessionFactory sessionFactory = getInstance().getSessionFactory();
         if (sessionFactory != null) {
-            logger.info("Shutting down the SessionFactory.");
+            logger.debug("Shutting down the SessionFactory.");
             sessionFactory.close();
         } else {
             logger.warn("SessionFactory is already null or not initialized.");

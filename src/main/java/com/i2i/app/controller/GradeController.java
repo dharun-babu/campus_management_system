@@ -26,28 +26,32 @@ public class GradeController {
      */
     public void startApplication() throws StudentException {
         logger.info("GradeController started");
-        boolean repetition = true;
-        System.out.println("\n\t\t\tWELCOME TO GRADE PAGE");
-        while (repetition) {
-            System.out.println("\n\t\t\t\tENTER THE OPTION...\n\n1. DISPLAY ALL GRADES \n2. DISPLAY PARTICULAR GRADE \n3. EXIT");
-            int mainMenuOption = scanner.nextInt();
-            scanner.nextLine();
-            switch (mainMenuOption) {
-                case 1:
-                    displayAllGrades();
-                    break;
-                case 2:
-                    displayParticularGrade();
-                    break;
-                case 3:
-                    logger.info("Exiting GradeController");
-                    repetition = false;
-                    break;
-                default:
-                    logger.warn("Invalid option selected: {}", mainMenuOption);
-                    System.out.println("INVALID OPTION");
-                    break;
+        try {
+            boolean repetition = true;
+            System.out.println("\n\t\t\tWELCOME TO GRADE PAGE");
+            while (repetition) {
+                System.out.println("\n\t\t\t\tENTER THE OPTION...\n\n1. DISPLAY ALL GRADES \n2. DISPLAY PARTICULAR GRADE \n3. EXIT");
+                int mainMenuOption = scanner.nextInt();
+                scanner.nextLine();
+                switch (mainMenuOption) {
+                    case 1:
+                        displayAllGrades();
+                        break;
+                    case 2:
+                        displayParticularGrade();
+                        break;
+                    case 3:
+                        logger.info("Exiting GradeController");
+                        repetition = false;
+                        break;
+                    default:
+                        logger.warn("Invalid option selected: {}", mainMenuOption);
+                        System.out.println("INVALID OPTION");
+                        break;
+                }
             }
+        } catch (Exception e) {
+            logger.error(e.getMessage());
         }
     }
 
