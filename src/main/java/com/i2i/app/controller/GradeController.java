@@ -11,20 +11,23 @@ import com.i2i.app.model.Grade;
 import com.i2i.app.model.Student;
 import com.i2i.app.model.Teacher;
 import com.i2i.app.service.GradeService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
 /**
  * This class manages grade-related operations, handles user interactions, and delegates tasks.
  */
+@Controller
 public class GradeController {
-
+    @Autowired
+    private GradeService gradeService;
     private static final Logger logger = LogManager.getLogger(GradeController.class);
     private Scanner scanner = new Scanner(System.in);
-    private GradeService gradeService = new GradeService();
 
     /**
      * Starts the application and displays the main menu for grade operations.
      */
-    public void startApplication() throws StudentException {
+    public void startApplication() {
         logger.info("GradeController started");
         try {
             boolean repetition = true;

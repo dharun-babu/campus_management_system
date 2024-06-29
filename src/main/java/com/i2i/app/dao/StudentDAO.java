@@ -8,6 +8,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import com.i2i.app.customexception.StudentException;
 import com.i2i.app.helper.SessionFactoryProvider;
@@ -17,6 +19,7 @@ import com.i2i.app.model.Student;
  * This class manages operations related to Student entities.
  * This class is responsible for creating, retrieving, and deleting student records, as well as managing connections and transactions.
  */
+@Repository
 public class StudentDAO {
 
     private static final Logger logger = LogManager.getLogger(StudentDAO.class);
@@ -60,9 +63,9 @@ public class StudentDAO {
             Query<Student> query = session.createQuery("from Student", Student.class);
             List<Student> students = query.list();
             if (students.isEmpty()) {
-                logger.info("All students retrieved successfully");
-            } else {
                 logger.info("No students");
+            } else {
+                logger.info("All students retrieved successfully");
             }
             return students;
         } catch (Exception e) {

@@ -6,6 +6,8 @@ import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.i2i.app.customexception.StudentException;
 import com.i2i.app.dao.StudentDAO;
@@ -13,21 +15,28 @@ import com.i2i.app.model.BankAccount;
 import com.i2i.app.model.Grade;
 import com.i2i.app.model.Student;
 import com.i2i.app.model.Teacher;
-
 /**
  * This class provides a comprehensive managing student-related operations.
  * This includes adding new students, retrieving existing students, and removing students from the system.
  * It interacts with the storage layer class to perform CRUD operations and collaborates with other service classes
  * to handle related functionalities.
  */
+@Service
 public class StudentService {
 
     private static final Logger logger = LogManager.getLogger(StudentService.class);
 
-    private GradeService gradeService = new GradeService();
-    private BankAccountService bankAccountService = new BankAccountService();
-    private TeacherService teacherService = new TeacherService();
-    private StudentDAO studentDAO = new StudentDAO();
+    @Autowired
+    private GradeService gradeService;
+
+    @Autowired
+    private BankAccountService bankAccountService;
+
+    @Autowired
+    private TeacherService teacherService;
+
+    @Autowired
+    private StudentDAO studentDAO;
 
     /**
      * <p>Adds a new student to the system.

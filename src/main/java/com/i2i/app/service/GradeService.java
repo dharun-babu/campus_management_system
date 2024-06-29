@@ -8,16 +8,20 @@ import org.apache.logging.log4j.Logger;
 import com.i2i.app.customexception.StudentException;
 import com.i2i.app.dao.GradeDAO;
 import com.i2i.app.model.Grade;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * <p> This class manages operations related to the Grade entity.
  * It provides methods for creating or retrieving grades and managing interactions with storage.
  * This service interacts with the storage layer class for underlying operations.</p>
  */
+@Service
 public class GradeService {
 
     private static final Logger logger = LogManager.getLogger(GradeService.class);
-    private GradeDAO gradeDAO = new GradeDAO();
+    @Autowired
+    private GradeDAO gradeDAO;
 
     /**
      * <p> Determines the section ('A', 'B', 'C', or 'D') for a given standard.

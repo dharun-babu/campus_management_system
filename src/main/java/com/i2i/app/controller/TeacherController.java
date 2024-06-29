@@ -12,20 +12,26 @@ import com.i2i.app.model.Student;
 import com.i2i.app.model.Teacher;
 import com.i2i.app.service.TeacherService;
 import com.i2i.app.util.StringUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 
 /**
  * This class is responsible for handling user interactions, assigning tasks, and managing operations related to teachers.
  */
+@Controller
+@Component
 public class TeacherController {
 
     private static final Logger logger = LogManager.getLogger(TeacherController.class);
     private Scanner scanner = new Scanner(System.in);
-    private TeacherService teacherService = new TeacherService();
+    @Autowired
+    private TeacherService teacherService;
 
     /**
      * Starts the application and displays the main menu for teacher operations.
      */
-    public void startApplication() throws StudentException {
+    public void startApplication(){
         logger.info("TeacherController started");
         try {
             boolean repetition = true;

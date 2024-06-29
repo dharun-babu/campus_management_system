@@ -10,16 +10,20 @@ import org.apache.logging.log4j.Logger;
 import com.i2i.app.customexception.StudentException;
 import com.i2i.app.dao.TeacherDAO;
 import com.i2i.app.model.Teacher;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * <p> This class manages operations related to teachers.
  * It provides methods to retrieve teachers based on subject, standard, and group.
  * This service interacts with the storage layer class for underlying operations.</p>
  */
+@Service
 public class TeacherService {
 
     private static final Logger logger = LogManager.getLogger(TeacherService.class);
-    private TeacherDAO teacherDAO = new TeacherDAO();
+    @Autowired
+    private TeacherDAO teacherDAO;
 
     /**
      * <p> Retrieves a set of teachers for the core subjects: Tamil, English, Maths, and Science.

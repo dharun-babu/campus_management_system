@@ -6,6 +6,9 @@ import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 
 import com.i2i.app.common.Group;
 import com.i2i.app.customexception.StudentException;
@@ -19,11 +22,14 @@ import com.i2i.app.util.StringUtil;
 /**
  * This class to manage student-related operations and handles user interactions and delegates tasks.
  */
+@Controller
+@Component
 public class StudentController {
 
+    @Autowired
+    private StudentService studentService;
     private static Logger logger = LogManager.getLogger(StudentController.class);
     private Scanner scanner = new Scanner(System.in);
-    private StudentService studentService = new StudentService();
 
     /**
      * <p> Starts the application and displays the main menu for student operations.

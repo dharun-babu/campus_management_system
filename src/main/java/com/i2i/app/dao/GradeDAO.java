@@ -11,11 +11,13 @@ import org.hibernate.query.Query;
 import com.i2i.app.customexception.StudentException;
 import com.i2i.app.helper.SessionFactoryProvider;
 import com.i2i.app.model.Grade;
+import org.springframework.stereotype.Repository;
 
 /**
  * This class manages operations related to Grade entities.
  * This class is responsible for retrieving and managing grade records, as well as managing connections and transactions.
  */
+@Repository
 public class GradeDAO {
 
     private static final Logger logger = LogManager.getLogger(GradeDAO.class);

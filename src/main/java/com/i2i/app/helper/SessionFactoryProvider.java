@@ -7,6 +7,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.SessionFactory;
 
 import com.i2i.app.customexception.StudentException;
+import org.springframework.stereotype.Component;
 
 /**
  * This class provides a Hibernate SessionFactory instance.
@@ -19,9 +20,9 @@ public class SessionFactoryProvider {
     private SessionFactory sessionFactory;
 
     /**
-     * <p>Constructs a SessionFactoryProvider and initializes the SessionFactory.
+     * Constructs a SessionFactoryProvider and initializes the SessionFactory.
      * This method attempts to build the SessionFactory using configuration files.
-     * If an exception occurs during configuration, it logs the error.</p>
+     * If an exception occurs during configuration, it logs the error.
      */
     private SessionFactoryProvider() {
         try {
@@ -29,13 +30,9 @@ public class SessionFactoryProvider {
             Dotenv dotenv = Dotenv.configure().load();
             Configuration configuration = new Configuration();
             String logFilePath = dotenv.get("LOG_FILE_PATH");
-            System.setProperty("LOG_FILE",logFilePath);
+            System.setProperty("LOG_FILE", logFilePath);
             configuration.setProperty("hibernate.connection.driver_class", dotenv.get("DB_DRIVER"));
-            if (null != dotenv.get("DB_URL")) {
-                configuration.setProperty("hibernate.connection.url", dotenv.get("DB_URL"));
-            } else {
-                logger.fatal("Database URL is missing in the environment configuration. SessionFactory initialization cannot proceed.");
-            }
+            configuration.setProperty("hibernate.connection.url", dotenv.get("DB_URL"));
             configuration.setProperty("hibernate.connection.username", dotenv.get("DB_USERNAME"));
             configuration.setProperty("hibernate.connection.password", dotenv.get("DB_PASSWORD"));
             configuration.configure("hibernate.cfg.xml");

@@ -11,10 +11,12 @@ import org.hibernate.SessionFactory;
 import com.i2i.app.customexception.StudentException;
 import com.i2i.app.helper.SessionFactoryProvider;
 import com.i2i.app.model.Teacher;
+import org.springframework.stereotype.Repository;
 
 /**
  * This class manages Teacher entities and performs CRUD operations related to Teacher data.
  */
+@Repository
 public class TeacherDAO {
 
     private static final Logger logger = LogManager.getLogger(TeacherDAO.class);

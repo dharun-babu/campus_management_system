@@ -6,15 +6,19 @@ import org.apache.logging.log4j.Logger;
 import com.i2i.app.customexception.StudentException;
 import com.i2i.app.dao.BankAccountDAO;
 import com.i2i.app.model.BankAccount;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * <p> This class manages bank account-related operations.
  * It is responsible for creating bank accounts, checking for existing account numbers, and handling resource cleanup.</p>
  */
+@Service
 public class BankAccountService {
 
     private static final Logger logger = LogManager.getLogger(BankAccountService.class);
-    private BankAccountDAO bankAccountDAO = new BankAccountDAO();
+    @Autowired
+    private BankAccountDAO bankAccountDAO;
 
     /**
      * <p> Creates a new BankAccount with the provided details.</p>

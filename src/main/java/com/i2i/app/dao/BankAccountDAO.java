@@ -9,11 +9,13 @@ import org.hibernate.query.Query;
 import com.i2i.app.customexception.StudentException;
 import com.i2i.app.helper.SessionFactoryProvider;
 import com.i2i.app.model.BankAccount;
+import org.springframework.stereotype.Repository;
 
 /**
  * This class manages operations related to BankAccount entities.
  * This class is responsible for verifying the existence of a bank account number.
  */
+@Repository
 public class BankAccountDAO {
 
     private static final Logger logger = LogManager.getLogger(BankAccountDAO.class);
