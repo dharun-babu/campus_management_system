@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="warn" monitorInterval="30">
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss:SSS} %-5p %c{1}:%L %M - %m%n"/>
+        </Console>
+
+        <RollingFile name="RollingFile" fileName="${sys:logPath:-/var/}cms_log.log" filePattern="cms_log-%d{yyyy-MM-dd}.log.gz">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss:SSS} %-5p %c{1}:%L %M - %m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+            <DefaultRolloverStrategy max="5"/>
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+        <!-- Custom application logs -->
+        <Logger name="com.i2i.app" level="debug" additivity="false">
+            <AppenderRef ref="RollingFile"/>
+        </Logger>
+        <Logger name="com.i2i.app" level="info" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
+
+        <!-- Turn off all other logs -->
+        <Logger name="org.springframework" level="off" additivity="false"/>
+        <Logger name="org.hibernate" level="off" additivity="false"/>
+        <Logger name="com.zaxxer.hikari" level="off" additivity="false"/>
+
+        <!-- Root logger -->
+        <Root level="off">
+            <AppenderRef ref="RollingFile"/>
+        </Root>
+    </Loggers>
+</Configuration>

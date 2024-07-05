@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import lombok.extern.slf4j.Slf4j;
 
 import com.i2i.app.dto.TeacherResponseDto;
 import com.i2i.app.service.TeacherService;
-import lombok.extern.slf4j.Slf4j;
 
 
 /**
@@ -40,6 +40,7 @@ public class TeacherController {
         log.info("Displaying all teachers");
         try {
             List<TeacherResponseDto> teachers = teacherService.getAllTeachers();
+            log.info("Displayed the {} teacher details ",teachers.size());
             return ResponseEntity.status(HttpStatus.OK).body(teachers);
         } catch (Exception e) {
             log.error("Error displaying teachers: {}", e.getMessage(), e);
@@ -56,8 +57,10 @@ public class TeacherController {
      */
     @GetMapping("/{id}")
     public ResponseEntity<TeacherResponseDto> getTeacherById(@PathVariable("id") int id) {
+        log.info("Displaying teacher by ID : {}", id);
         try {
             TeacherResponseDto teacher = teacherService.getTeacherById(id);
+            log.info("Successfully retrieved the teacher details ");
             return ResponseEntity.status(HttpStatus.OK).body(teacher);
         } catch (Exception e) {
             log.error("Error displaying teacher by ID: {}", e.getMessage(), e);

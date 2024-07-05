@@ -6,10 +6,8 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import com.i2i.app.dto.CreateStudentRequestDto;
 import com.i2i.app.dto.StudentResponseDto;
@@ -22,14 +20,11 @@ import com.i2i.app.repositories.StudentRepository;
 import com.i2i.app.customexception.StudentException;
 
 /**
- * <p>
  * This class handles the operations related to student management.
- * </p>
  */
 @Service
+@Slf4j
 public class StudentService {
-
-    private static final Logger logger = LoggerFactory.getLogger(StudentService.class);
 
     @Autowired
     private StudentRepository studentRepository;
@@ -56,11 +51,11 @@ public class StudentService {
      */
     public List<StudentResponseDto> getAllStudents() throws StudentException {
         try {
-            logger.info("Fetching all student details");
+            log.debug("Star to fetching all student details");
             List<Student> students = studentRepository.findAll();
+            log.debug("Successfully fetch {} students details", students.size());
             return mapperInterface.convertToStudentResponseDto(students);
         } catch (Exception e) {
-            logger.error("Error retrieving all student details", e);
             throw new StudentException("Unable to retrieve all student details", e);
         }
     }
@@ -76,12 +71,12 @@ public class StudentService {
      */
     public StudentResponseDto getStudentById(int id) throws StudentException {
         try {
-            logger.info("Fetching student details for id: {}", id);
+            log.debug("Fetching Id : {} details from the database", id);
             Student student = studentRepository.findById(id)
                     .orElseThrow(() -> new StudentException("Unable to retrieve student details by ID: " + id));
+            log.debug("Successfully fetched details of {}", student);
             return mapperInterface.convertToStudentResponseDto(student);
         } catch (Exception e) {
-            logger.error("Error retrieving student by id: {}", id, e);
             throw new StudentException("Unable to retrieve student details by ID: " + id, e);
         }
     }
@@ -95,12 +90,14 @@ public class StudentService {
      * @return StudentResponseDto of the saved student
      * @throws StudentException if unable to save the student details
      */
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional
     public StudentResponseDto saveStudent(CreateStudentRequestDto createStudentRequestDto) throws StudentException {
         try {
-            logger.info("Saving new student details");
+            log.debug("Saving new student details");
             Grade grade = gradeService.getGradeByStandard(createStudentRequestDto.getCreateGradeRequestDto().getStandard());
+            log.debug("Successfully get grade from the grade service : {} ", grade);
             BankAccountResponseDto bankAccountResponseDto = bankAccountService.saveBankAccount(createStudentRequestDto.getCreateBankAccountRequestDto());
+            log.debug("Successfully get bankaccount from bank account service : {}", bankAccountResponseDto);
             Set<Teacher> teachers = new HashSet<>();
             if (!createStudentRequestDto.getSubjects().isEmpty()) {
                 for (String subject : createStudentRequestDto.getSubjects()) {
@@ -109,10 +106,9 @@ public class StudentService {
             }
             Student student = new Student(createStudentRequestDto.getStudentName(), createStudentRequestDto.getStudentDob(), grade, mapperInterface.convertToBankAccount(bankAccountResponseDto), teachers);
             Student savedStudent = studentRepository.save(student);
-            logger.info("Saved new student details for id: {}", savedStudent.getStudentId());
+            log.info("Inserted the student in database");
             return mapperInterface.convertToStudentResponseDto(savedStudent);
         } catch (Exception e) {
-            logger.error("Error saving student details", e);
             throw new StudentException("Unable to save the student details", e);
         }
     }
@@ -127,14 +123,14 @@ public class StudentService {
      */
     public void deleteStudent(int id) throws StudentException {
         try {
-            logger.info("Deleting student details for id: {}", id);
+            log.debug("Deleting student details for id: {}", id);
             Student student = studentRepository.findById(id)
                     .orElseThrow(() -> new StudentException("Unable to retrieve student details by ID: " + id));
+            log.debug("Retrieved the student to modify the count of students ");
             gradeService.modifyCountByStandardAndSection(student.getGrade().getStandard(), student.getGrade().getSection());
             studentRepository.deleteById(id);
-            logger.info("Deleted student details for id: {}", id);
+            log.debug("Removed student from the database");
         } catch (Exception e) {
-            logger.error("Error deleting student by id: {}", id, e);
             throw new StudentException("Unable to delete the student details by ID: " + id, e);
         }
     }
@@ -150,10 +146,9 @@ public class StudentService {
      */
     public boolean isIdExist(int id) throws StudentException {
         try {
-            logger.debug("Checking existence of student id: {}", id);
+            log.debug("Checking existence of student id: {}", id);
             return studentRepository.existsById(id);
         } catch (Exception e) {
-            logger.error("Error checking existence of student id: {}", id, e);
             throw new StudentException("Unable to check the existence of ID: " + id, e);
         }
     }

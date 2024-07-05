@@ -38,22 +38,18 @@ public class StudentController {
      */
     @PostMapping
     public ResponseEntity<StudentResponseDto> addStudent(@RequestBody CreateStudentRequestDto createStudentRequestDto) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Custom-Header", "StudentAdded");
         try {
             log.info("Adding student");
             StudentResponseDto response = studentService.saveStudent(createStudentRequestDto);
             log.debug("Student added with details: {}", response);
             log.info("Successfully added the student");
-            return ResponseEntity.status(HttpStatus.CREATED).headers(headers).body(response);
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } catch (StudentException e) {
             log.error("Error adding student: {}", e.getMessage(), e);
-            headers.add("Error-Message", "Failed to add student: " + e.getMessage());
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).headers(headers).body(null);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         } catch (Exception e) {
             log.error("Unexpected error adding student: {}", e.getMessage(), e);
-            headers.add("Error-Message", "Unexpected error occurred");
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).headers(headers).body(null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 
@@ -63,19 +59,15 @@ public class StudentController {
      */
     @GetMapping
     public ResponseEntity<List<StudentResponseDto>> getAllStudents() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Custom-Header", "AllStudentsRetrieved");
-
         log.debug("Retrieving all students");
         try {
             List<StudentResponseDto> students = studentService.getAllStudents();
             log.debug("Retrieved {} students", students.size());
-
-            return ResponseEntity.status(HttpStatus.OK).headers(headers).body(students);
+            log.info("Successfully retrieved {} students details", students.size());
+            return ResponseEntity.status(HttpStatus.OK).body(students);
         } catch (Exception e) {
             log.error("Error retrieving students: {}", e.getMessage(), e);
-            headers.add("Error-Message", "Failed to retrieve students");
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).headers(headers).body(null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 
@@ -86,19 +78,15 @@ public class StudentController {
      */
     @GetMapping("/{id}")
     public ResponseEntity<StudentResponseDto> getStudentById(@PathVariable("id") int id) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Custom-Header", "StudentRetrieved");
-
         try {
             log.debug("Retrieving student with ID: {}", id);
             StudentResponseDto student = studentService.getStudentById(id);
             log.debug("Retrieved student details: {}", student);
-
-            return ResponseEntity.status(HttpStatus.OK).headers(headers).body(student);
+            log.info("Successfully retrieved the student details by ID : {}", id);
+            return ResponseEntity.status(HttpStatus.OK).body(student);
         } catch (Exception e) {
             log.error("Error retrieving student by ID: {}", e.getMessage(), e);
-            headers.add("Error-Message", "Failed to retrieve student");
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).headers(headers).body(null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 
@@ -109,19 +97,14 @@ public class StudentController {
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteStudentById(@PathVariable("id") int id) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Custom-Header", "StudentDeleted");
-
         try {
             log.debug("Deleting student with ID: {}", id);
             studentService.deleteStudent(id);
-            log.info("Deleted student with ID: {}", id);
-
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).headers(headers).build();
+            log.info("Successfully deleted student by  ID: {}", id);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         } catch (Exception e) {
             log.error("Error deleting student: {}", e.getMessage(), e);
-            headers.add("Error-Message", "Failed to delete student");
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).headers(headers).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 }

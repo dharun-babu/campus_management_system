@@ -32,6 +32,7 @@ public class GradeController {
         log.info("Displaying all grades");
         try {
             List<GradeResponseDto> grades = gradeService.getAllGrades();
+            log.info("Successfully retrieved {} grade details", grades.size());
             return ResponseEntity.status(HttpStatus.OK).body(grades);
         } catch (Exception e) {
             log.error("Error displaying grades: {}", e.getMessage(), e);
@@ -49,8 +50,10 @@ public class GradeController {
     @GetMapping("/{standard}/{section}")
     public ResponseEntity<GradeResponseDto> getGradeByStandardAndSection(
             @PathVariable("standard") int standard, @PathVariable("section") char section) {
+        log.info("Displaying a grade details by standard {} and section {}", standard, section );
         try {
             GradeResponseDto grade = gradeService.getGradeByStandardAndSection(standard, section);
+            log.info("Successfully displayed the grade detail : {}", grade);
             return ResponseEntity.status(HttpStatus.OK).body(grade);
         } catch (Exception e) {
             log.error("Error displaying grade by standard and section: {}", e.getMessage(), e);
