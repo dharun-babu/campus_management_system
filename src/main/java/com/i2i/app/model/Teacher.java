@@ -3,6 +3,7 @@ package com.i2i.app.model;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -21,7 +22,7 @@ import com.i2i.app.util.DateUtil;
 @Table(name = "teacher")
 public class Teacher {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "teacher_id")
     private int teacherId;
 
@@ -35,7 +36,7 @@ public class Teacher {
     private Date dateOfJoin;
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "teachers",fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(mappedBy = "teachers", fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Set<Student> students = new HashSet<>();
 
     public Teacher() {

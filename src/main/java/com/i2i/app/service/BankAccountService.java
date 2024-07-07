@@ -1,23 +1,21 @@
 package com.i2i.app.service;
 
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.i2i.app.customexception.StudentException;
 import com.i2i.app.dto.BankAccountResponseDto;
 import com.i2i.app.dto.CreateBankAccountRequestDto;
 import com.i2i.app.mapper.MapperInterface;
 import com.i2i.app.model.BankAccount;
 import com.i2i.app.repositories.BankAccountRepository;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
- * This class for managing bank account-related operations.
- * This class provides methods to handle the business logic for creating and retrieving bank account details.
+ * This class handling operations related to bank account management.
  */
 @Service
 @Slf4j
-public class BankAccountService implements BankAccountInterface {
+public class BankAccountService {
 
     @Autowired
     private BankAccountRepository bankAccountRepository;
@@ -26,24 +24,28 @@ public class BankAccountService implements BankAccountInterface {
     private MapperInterface mapperInterface;
 
     /**
-     * <p>Creates a new bank account.
-     * This method processes the request to create a new bank account, converts the request details,
-     * and saves the new bank account.</p>
+     * <p>
+     *     Saves a new bank account based on the provided request DTO.
+     * </p>
      *
-     * @param createBankAccountRequestDto The request details for creating a new bank account.
-     * @return The response details of the created bank account.
-     * @throws StudentException if an error occurs while creating the bank account.
+     * @param createBankAccountRequestDto The DTO containing bank account details to be saved.
+     * @return The saved {@link BankAccount} details .
+     * @throws StudentException if there is an error while saving the bank account.
      */
-    @Override
-    public BankAccountResponseDto saveBankAccount(CreateBankAccountRequestDto createBankAccountRequestDto) throws StudentException {
-        log.debug("Attempting to save bank account details");
+    public BankAccount saveBankAccount(CreateBankAccountRequestDto createBankAccountRequestDto) throws StudentException {
         try {
-            BankAccount bankAccount = bankAccountRepository.save(mapperInterface.convertToBankAccount(createBankAccountRequestDto));
-            log.info("Successfully saved bank account details");
-            return mapperInterface.convertToBankAccountResponseDto(bankAccount);
+            log.debug("Saving bank account details of {}", createBankAccountRequestDto);
+            BankAccount bankAccount = new BankAccount();
+            bankAccount.setAccountNumber(createBankAccountRequestDto.getAccountNumber());
+            bankAccount.setBankName(createBankAccountRequestDto.getBankName());
+            bankAccount.setBranchName(createBankAccountRequestDto.getBranchName());
+            bankAccount.setIfscCode(createBankAccountRequestDto.getIfscCode());
+            bankAccount.setMobileNumber(createBankAccountRequestDto.getMobileNumber());
+            BankAccount savedBankAccount = bankAccountRepository.save(bankAccount);
+            log.debug("Successfully saved bank account details: {}", savedBankAccount);
+            return savedBankAccount;
         } catch (Exception e) {
-            log.error("Error occurred while saving bank account details: {}", e.getMessage(), e);
-            throw new StudentException("Unable to save bank account details. Please try again later.", e);
+            throw new StudentException("Failed to save bank account", e);
         }
     }
 }

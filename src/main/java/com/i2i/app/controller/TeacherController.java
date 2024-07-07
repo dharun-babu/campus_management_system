@@ -17,12 +17,12 @@ import com.i2i.app.service.TeacherService;
 
 
 /**
- * Controller class for managing teacher-related operations.
+ * This class for managing teacher-related operations.
  * This class provides endpoints to create, retrieve, and delete teacher details,
  * along with retrieving teacher details based on subject name.
  */
 @RestController
-@RequestMapping("cms/api/1.0.0/teachers")
+@RequestMapping("cms/api/v1/teachers")
 @Slf4j
 public class TeacherController {
 
@@ -30,13 +30,14 @@ public class TeacherController {
     private TeacherService teacherService;
 
     /**
-     * <p>Endpoint to retrieve all teachers.
-     * This method handles HTTP GET requests to retrieve all teacher details.</p>
+     * <p>
+     *     This method handles HTTP GET requests to retrieve all teacher details.
+     * </p>
      *
      * @return ResponseEntity containing the list of all teachers or an error status.
      */
     @GetMapping
-    public ResponseEntity<List<TeacherResponseDto>> getAllTeachers() {
+    public ResponseEntity<?> getAllTeachers() {
         log.info("Displaying all teachers");
         try {
             List<TeacherResponseDto> teachers = teacherService.getAllTeachers();
@@ -44,19 +45,20 @@ public class TeacherController {
             return ResponseEntity.status(HttpStatus.OK).body(teachers);
         } catch (Exception e) {
             log.error("Error displaying teachers: {}", e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Unable to fetch all teacher details");
         }
     }
 
     /**
-     * <p>Endpoint to retrieve a teacher by their ID.
-     * This method handles HTTP GET requests to retrieve a teacher's details based on their ID.</p>
+     * <p>
+     *    This method handles HTTP GET requests to retrieve a teacher's details based on their ID.
+     * </p>
      *
      * @param id The ID of the teacher to retrieve.
      * @return ResponseEntity containing the teacher details or an error status.
      */
     @GetMapping("/{id}")
-    public ResponseEntity<TeacherResponseDto> getTeacherById(@PathVariable("id") int id) {
+    public ResponseEntity<?> getTeacherById(@PathVariable("id") int id) {
         log.info("Displaying teacher by ID : {}", id);
         try {
             TeacherResponseDto teacher = teacherService.getTeacherById(id);
@@ -64,13 +66,14 @@ public class TeacherController {
             return ResponseEntity.status(HttpStatus.OK).body(teacher);
         } catch (Exception e) {
             log.error("Error displaying teacher by ID: {}", e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("unable to fetch teacher by id");
         }
     }
 
     /**
-     * <p>Endpoint to retrieve a teacher by their subject name.
-     * This method handles HTTP GET requests to retrieve a teacher's details based on their subject name.</p>
+     * <p>
+     *     This method handles HTTP GET requests to retrieve a teacher's details based on their subject name.
+     * </p>
      *
      * @param subject The subject name of the teacher to retrieve.
      * @return ResponseEntity containing the teacher details or an error status.
@@ -87,8 +90,9 @@ public class TeacherController {
     }
 
     /**
-     * <p>Endpoint to delete a teacher by their ID.
-     * This method handles HTTP DELETE requests to delete a teacher based on their ID.</p>
+     * <p>
+     *     This method handles HTTP DELETE requests to delete a teacher based on their ID.
+     * </p>
      *
      * @param id The ID of the teacher to delete.
      * @return ResponseEntity with no content status or an error status.

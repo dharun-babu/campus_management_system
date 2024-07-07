@@ -1,23 +1,16 @@
 package com.i2i.app.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import java.util.UUID;
 
 @Entity
 @Table(name = "bankaccount")
 public class BankAccount {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "account_id")
-    private int accountId;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "account_id", updatable = false, nullable = false, columnDefinition = "BINARY(16)")
+    private UUID accountId;
 
     @Column(name = "bank_name", length = 100, nullable = false)
     private String bankName;
@@ -25,7 +18,7 @@ public class BankAccount {
     @Column(name = "branch_name", length = 30, nullable = false)
     private String branchName;
 
-    @Column(name = "account_number", unique = true, length = 16)
+    @Column(name = "account_number", length = 16)
     private long accountNumber;
 
     @Column(name = "ifsc_code", nullable = false)
@@ -35,26 +28,25 @@ public class BankAccount {
     private long mobileNumber;
 
     @JsonIgnore
-    @OneToOne(mappedBy = "bankAccount", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "bankAccount",cascade = CascadeType.ALL)
     private Student student;
 
     public BankAccount() {
     }
 
-    public BankAccount(String bankName, String branchName, long accountNumber, String ifscCode, long mobileNumber, Student student) {
+    public BankAccount(String bankName, String branchName, long accountNumber, String ifscCode, long mobileNumber) {
         this.bankName = bankName;
         this.branchName = branchName;
         this.accountNumber = accountNumber;
         this.ifscCode = ifscCode;
         this.mobileNumber = mobileNumber;
-        this.student = student;
     }
 
-    public int getAccountId() {
+    public UUID getAccountId() {
         return accountId;
     }
 
-    public void setAccountId(int accountId) {
+    public void setAccountId(UUID accountId) {
         this.accountId = accountId;
     }
 
@@ -104,5 +96,18 @@ public class BankAccount {
 
     public void setStudent(Student student) {
         this.student = student;
+    }
+
+    @Override
+    public String toString() {
+        return "BankAccount{" +
+                "accountId=" + accountId +
+                ", bankName='" + bankName + '\'' +
+                ", branchName='" + branchName + '\'' +
+                ", accountNumber=" + accountNumber +
+                ", ifscCode='" + ifscCode + '\'' +
+                ", mobileNumber=" + mobileNumber +
+                ", student=" + student +
+                '}';
     }
 }

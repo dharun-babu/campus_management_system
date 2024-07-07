@@ -1,16 +1,18 @@
 package com.i2i.app.dto;
 
+import java.util.UUID;
+
 public class GradeTransactionalDto {
-    private int gradeId;
+    private UUID gradeId;
     private int standard;
     private char section;
     private int countOfStudent;
 
-    public int getGradeId() {
+    public UUID getGradeId() {
         return gradeId;
     }
 
-    public void setGradeId(int gradeId) {
+    public void setGradeId(UUID gradeId) {
         this.gradeId = gradeId;
     }
 

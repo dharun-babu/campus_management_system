@@ -6,4 +6,7 @@ import com.i2i.app.model.Student;
 
 @Repository
 public interface StudentRepository extends JpaRepository<Student, Integer> {
+    Student findByRollNumber(String rollNumber);
+    void deleteByRollNumber(String rollNumber);
+    boolean existsByRollNumber(String rollNumber);
 }

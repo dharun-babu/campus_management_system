@@ -2,6 +2,7 @@ package com.i2i.app.model;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.CascadeType;
@@ -14,17 +15,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
-
 @Entity
 @Table(name = "grade")
 public class Grade {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "grade_id")
-    private int gradeId;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "grade_id", updatable = false, nullable = false, columnDefinition = "BINARY(16)")
+    private UUID gradeId;
 
     @Column(name = "standard", precision = 2, nullable = false)
     private int standard;
@@ -42,18 +39,24 @@ public class Grade {
     public Grade() {
     }
 
-    public Grade(int gradeId, char section, int countOfStudent, Set<Student> students) {
-        this.gradeId = gradeId;
+    public Grade(UUID gradeId, int standard, char section, int countOfStudent, Set<Student> students) {
+        this.standard = standard;
         this.section = section;
         this.countOfStudent = countOfStudent;
         this.students = students;
     }
 
-    public int getGradeId() {
+    public Grade(int standard, char section, int countOfStudent) {
+        this.standard = standard;
+        this.section = section;
+        this.countOfStudent = countOfStudent;
+    }
+
+    public UUID getGradeId() {
         return gradeId;
     }
 
-    public void setGradeId(int gradeId) {
+    public void setGradeId(UUID gradeId) {
         this.gradeId = gradeId;
     }
 
@@ -92,7 +95,7 @@ public class Grade {
     @Override
     public String toString() {
         return new StringBuilder()
-                .append("\nStandard : ").append(standard)
+                .append("\nStandard: ").append(gradeId)
                 .append("\nSection: ").append(section)
                 .toString();
     }

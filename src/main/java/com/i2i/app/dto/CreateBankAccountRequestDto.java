@@ -1,24 +1,32 @@
 package com.i2i.app.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.i2i.app.model.Student;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.OneToOne;
-import lombok.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
-import java.util.Date;
-
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateBankAccountRequestDto {
+
+    @NotBlank
+    @Pattern(regexp = "^[a-zA-Z]+$")
     private String bankName;
+
+    @NotBlank
+    @Pattern(regexp = "^[a-zA-Z]+$")
     private String branchName;
+
+    @Size(min = 16, max = 16)
     private long accountNumber;
+
+    @NotBlank
+    @Pattern(regexp = "^[A-Z]{4}0[A-Z0-9]{6}$")
     private String ifscCode;
+
+    @Pattern(regexp = "^[789]\\d{9}$")
     private long mobileNumber;
-    private StudentMapDto studentMapDto;
 
     public String getBankName() {
         return bankName;
@@ -58,13 +66,5 @@ public class CreateBankAccountRequestDto {
 
     public void setMobileNumber(long mobileNumber) {
         this.mobileNumber = mobileNumber;
-    }
-
-    public StudentMapDto getStudentMapDto() {
-        return studentMapDto;
-    }
-
-    public void setStudentMapDto(StudentMapDto studentMapDto) {
-        this.studentMapDto = studentMapDto;
     }
 }

@@ -7,6 +7,7 @@ import com.i2i.app.model.Grade;
 import java.util.List;
 
 public interface GradeServiceInterface {
+    char createSectionForStandard(int standard) throws StudentException;
     List<GradeResponseDto> getAllGrades() throws StudentException;
     Grade getGradeByStandard(int standard) throws StudentException;
     void modifyCountByStandardAndSection(int standard, char section) throws StudentException;

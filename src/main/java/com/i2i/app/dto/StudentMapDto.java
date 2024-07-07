@@ -13,9 +13,6 @@ import java.util.Date;
 public class StudentMapDto {
     private String studentName;
     private Date studentDob;
-    public int getAge() {
-        return DateUtil.calculateYearDifference(studentDob);
-    }
 
     public String getStudentName() {
         return studentName;

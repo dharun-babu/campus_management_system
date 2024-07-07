@@ -1,7 +1,6 @@
 package com.i2i.app.dto;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Pattern;
@@ -13,7 +12,7 @@ import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateStudentRequestDto {
+public class UpdateRequestStudentDto {
 
     @NotBlank
     @Pattern(regexp = "^[a-zA-Z]+$")
@@ -23,13 +22,8 @@ public class CreateStudentRequestDto {
     @Past
     private Date studentDob;
 
-    @NotNull
     private CreateGradeRequestDto grade;
-
-    @NotNull
     private CreateBankAccountRequestDto bankAccount;
-
-    @NotEmpty
     private Set<String> subjects;
 
     public String getStudentName() {

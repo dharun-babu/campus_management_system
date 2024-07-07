@@ -1,17 +1,18 @@
 package com.i2i.app.dto;
 
 import java.util.Date;
+import java.util.UUID;
 
 public class StudentTransactionalDto {
-    private int studentId;
+    private UUID studentId;
     private String studentName;
     private Date studentDob;
 
-    public int getStudentId() {
+    public UUID getStudentId() {
         return studentId;
     }
 
-    public void setStudentId(int studentId) {
+    public void setStudentId(UUID studentId) {
         this.studentId = studentId;
     }
 

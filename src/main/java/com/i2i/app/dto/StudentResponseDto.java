@@ -4,20 +4,20 @@ import java.util.Date;
 import java.util.List;
 
 public class StudentResponseDto {
-    private int studentId;
+    private String rollNumber;
     private String studentName;
     private Date studentDob;
     private int age;
-    private GradeMapDto gradeMapDto;
-    private BankAccountMapDto bankAccountMapDto;
+    private GradeMapDto grade;
+    private BankAccountMapDto bankAccount;
     private List<TeacherMapDto> teachers;
 
-    public int getStudentId() {
-        return studentId;
+    public String getRollNumber() {
+        return rollNumber;
     }
 
-    public void setStudentId(int studentId) {
-        this.studentId = studentId;
+    public void setRollNumber(String rollNumber) {
+        this.rollNumber = rollNumber;
     }
 
     public String getStudentName() {
@@ -44,20 +44,20 @@ public class StudentResponseDto {
         this.age = age;
     }
 
-    public GradeMapDto getGradeMapDto() {
-        return gradeMapDto;
+    public GradeMapDto getGrade() {
+        return grade;
     }
 
-    public void setGradeMapDto(GradeMapDto gradeMapDto) {
-        this.gradeMapDto = gradeMapDto;
+    public void setGrade(GradeMapDto grade) {
+        this.grade = grade;
     }
 
-    public BankAccountMapDto getBankAccountMapDto() {
-        return bankAccountMapDto;
+    public BankAccountMapDto getBankAccount() {
+        return bankAccount;
     }
 
-    public void setBankAccountMapDto(BankAccountMapDto bankAccountMapDto) {
-        this.bankAccountMapDto = bankAccountMapDto;
+    public void setBankAccount(BankAccountMapDto bankAccount) {
+        this.bankAccount = bankAccount;
     }
 
     public List<TeacherMapDto> getTeachers() {

@@ -1,39 +1,70 @@
 package com.i2i.app.util;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
- * This class that provides some common string related operation that are accessible for use across an all.
+ * This class for common string operations.
  */
 public final class StringUtil {
 
+    public enum Subject {
+        TAMIL, ENGLISH, MATHS, SCIENCE, SOCIAL_SCIENCE, COMPUTER_SCIENCE, BIOLOGY, COMMERCE;
+    }
+
+    private static final Set<String> VALID_SUBJECTS = new HashSet<>(Arrays.asList(
+            "TAMIL", "ENGLISH", "MATHS", "SCIENCE", "SOCIAL_SCIENCE", "COMPUTER_SCIENCE", "BIOLOGY", "COMMERCE"
+    ));
+
     /**
-     * <p>Checks whether the given string contains any special character instead of an alphabet.</p>
-	 * 
-     * @param str  Input string which is to be validated. 
-     * @return validated string.
-     * Ex:"ranjith" or "RaNiJtH", return true.
-     * Ex:"r@njith!", return false.
+     * <p>
+     *     Validates if a string contains only alphabets.
+     * </p>
+     *
+     * @param str The string to validate.
+     * @return true if the string contains only alphabets, false otherwise.
+     *        Sample Input: "ranjith" or "RaNjItH MaStEr", return true
+     * Use: {@link StringUtil#validateString(String)}
      */
     public static boolean validateString(String str) {
-        String duplicateStr = str.trim();
-	    for (char character : duplicateStr.toCharArray()) {
-	         if ((character == 32) || (character >= 65 && character <= 90) || (character >= 97 && character <= 122)) {
-                 continue;
-	         } else {
-                 return false;
-	         }
+        String trimmedStr = str.trim();
+        for (char character : trimmedStr.toCharArray()) {
+            if ((character == 32) || (character >= 65 && character <= 90) || (character >= 97 && character <= 122)) {
+                continue;
+            } else {
+                return false;
+            }
         }
         return true;
     }
 
-	/**
-     * <p>Checks whether the given character is either 'A' or 'B'.</p>
+    /**
+     * <p>
+     *     Validates if a character is 'A', 'B', 'C', or 'D'.
+     * </p>
      *
-     * @param character  The input character to be validated.
-     * @return 'A' or 'B' if the character matches, otherwise returns '\u0000' (null character).
+     * @param character The character to validate.
+     * @return 'A', 'B', 'C', or 'D' if the character matches, otherwise '\u0000'.
+     * Use: {@link StringUtil#validateChar(char)}
      */
     public static char validateChar(char character) {
-        if (character == 'A' || character == 'B') {
+        if (character == 'A' || character == 'B' || character == 'C' || character == 'D') {
             return character;
         }
-        return '\u0000'; // '\u0000' represents null character in Unicode
+        return '\u0000';
+    }
+
+    /**
+     * <p>
+     *     Validates if a string is a valid subject.
+     * </p>
+     *
+     * @param subject The subject to validate.
+     * @return true if the subject is valid, false otherwise.
+     * Use: {@link StringUtil#isValidSubject(String)}
+     */
+    public static boolean isValidSubject(String subject) {
+        return VALID_SUBJECTS.contains(subject.toUpperCase());
     }
 }

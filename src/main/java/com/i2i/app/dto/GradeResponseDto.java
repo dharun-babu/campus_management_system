@@ -1,6 +1,7 @@
 package com.i2i.app.dto;
 
 import java.util.Set;
+import java.util.UUID;
 
 import lombok.*;
 
@@ -8,17 +9,17 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class GradeResponseDto {
-    private int gradeId;
+    private UUID gradeId;
     private int standard;
     private char section;
     private int countOfStudent;
     private Set<StudentMapDto> students;
 
-    public int getGradeId() {
+    public UUID getGradeId() {
         return gradeId;
     }
 
-    public void setGradeId(int gradeId) {
+    public void setGradeId(UUID gradeId) {
         this.gradeId = gradeId;
     }
 

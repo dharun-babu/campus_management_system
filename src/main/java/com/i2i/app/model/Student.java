@@ -2,8 +2,8 @@ package com.i2i.app.model;
 
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import jakarta.persistence.*;
 
@@ -13,18 +13,21 @@ import com.i2i.app.util.DateUtil;
 @Table(name = "student")
 public class Student {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "student_id")
-    private int studentId;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "student_id", updatable = false, nullable = false, columnDefinition = "BINARY(16)")
+    private UUID studentId;
 
     @Column(name = "student_name", length = 30, nullable = false)
     private String studentName;
+
+    @Column(name= "roll_number", nullable = false)
+    private String rollNumber;
 
     @Temporal(TemporalType.DATE)
     @Column(name = "student_dob")
     private Date studentDob;
 
-    @OneToOne
+    @OneToOne()
     @JoinColumn(name = "account_id")
     private BankAccount bankAccount;
 
@@ -49,11 +52,11 @@ public class Student {
         this.teachers = teachers;
     }
 
-    public int getStudentId() {
+    public UUID getStudentId() {
         return studentId;
     }
 
-    public void setStudentId(int studentId) {
+    public void setStudentId(UUID studentId) {
         this.studentId = studentId;
     }
 
@@ -97,10 +100,18 @@ public class Student {
         this.teachers = teachers;
     }
 
+    public String getRollNumber() {
+        return rollNumber;
+    }
+
+    public void setRollNumber(String rollNumber) {
+        this.rollNumber = rollNumber;
+    }
+
     @Override
     public String toString() {
         return new StringBuilder()
-                .append("\nStudent Id: ").append(studentId)
+                .append("\nStudent RollNumber: ").append(rollNumber)
                 .append("\nStudent Name: ").append(studentName)
                 .append("\nStudent DOB: ").append(studentDob)
                 .append("\nStudent Age: ").append(DateUtil.calculateYearDifference(studentDob))

@@ -4,22 +4,24 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class BankAccountResponseDto {
-    private int accountId;
+    private UUID accountId;
     private String bankName;
     private String branchName;
     private long accountNumber;
     private String ifscCode;
     private long mobileNumber;
 
-    public int getAccountId() {
+    public UUID getAccountId() {
         return accountId;
     }
 
-    public void setAccountId(int accountId) {
+    public void setAccountId(UUID accountId) {
         this.accountId = accountId;
     }
 

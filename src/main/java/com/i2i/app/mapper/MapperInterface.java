@@ -10,18 +10,17 @@ import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
-import java.util.Optional;
 
 @Mapper(componentModel = "spring")
 public interface MapperInterface {
 
     MapperInterface MapperInterfaceInstance = Mappers.getMapper(MapperInterface.class);
 
-    @Mapping(source = "studentId", target = "studentId")
+    @Mapping(source = "rollNumber", target = "rollNumber")
     @Mapping(source = "studentName", target = "studentName")
     @Mapping(source = "studentDob", target = "studentDob")
-    @Mapping(source = "student.grade", target = "gradeMapDto")
-    @Mapping(source = "student.bankAccount", target = "bankAccountMapDto")
+    @Mapping(source = "student.grade", target = "grade")
+    @Mapping(source = "student.bankAccount", target = "bankAccount")
     @Mapping(source = "student.teachers", target = "teachers")
     StudentResponseDto convertToStudentResponseDto(Student student);
 
